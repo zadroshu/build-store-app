@@ -6,12 +6,15 @@
     </div>
 </template>
 
-<script>
-import Dataservice from './api/dataservice.js';
+<script setup>
 import StHeader from './components/primitives/st-header.vue';
 import StFooter from './components/primitives/st-footer.vue';
+</script>
 
-export const dataservice = new Dataservice();
+<script>
+import Dataservice from './api/dataservice';
+
+export const dataservice = new Dataservice().dataservice;
 </script>
 
 <style lang="scss">

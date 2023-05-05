@@ -1,13 +1,14 @@
 <template>
     <div class="st-index">
       <div class="st-index__toolbar">
-        <Multiselect
+        toolbar
+        <!-- <Multiselect
           class="st-index__multiselect"
           v-model="comboboxValue"
           :options="comboboxOptions"
           @input="selectCategory"
-        />
-        <autocomplete
+        /> -->
+        <!-- <autocomplete
         :search="search"
         placeholder="Поиск..."
         aria-label="Поиск по товарам"
@@ -16,12 +17,12 @@
         resultListLabel = "aria-label"
         @submit="onSubmit"
         >
-        </autocomplete>
+        </autocomplete> -->
       </div>
   
   
-      <st-product-list :products="products.data"/>
-      <st-pagination :links="products.links"/>
+      <!-- <st-product-list :products="products.data"/> -->
+      <!-- <st-pagination :links="products.links"/> -->
     </div>
   </template>
   
@@ -30,9 +31,10 @@
   import StProductList from "./primitives//st-product-list.vue";
   import Multiselect from 'vue-multiselect'
   import Autocomplete from '@trevoreyre/autocomplete-vue'
-  import {toRaw} from 'vue';
+  import {toRaw, onMounted } from 'vue';
   import axios from 'axios';
-  import dataservice from '../App.vue';
+  import { dataservice } from "../App.vue";
+  
   
   const props = defineProps({
     products: Object,
@@ -57,10 +59,7 @@
   
   async function getComboboxOptions() {
     let categoriesCombobox = [{value: -1,label: 'не выбрано'}];
-    const products = await dataservice.product.get();
-    console.log(products);
-    console.log(toRaw(props.categories));
-    toRaw(props.categories).map(category => { categoriesCombobox.push({value: category.id,label: category.name}) });
+    
     return categoriesCombobox;
   }
   
@@ -71,6 +70,14 @@
       await axios.get('/');
     }
   }
+
+  onMounted(async () => {
+    console.log('mounted');
+    const products = await dataservice.product.axiosget(2);
+    const product = await dataservice.product.get(1);
+    console.log(JSON.stringify(products));
+    console.log(JSON.stringify(product));
+  })
 
 
   </script>

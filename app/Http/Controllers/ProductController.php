@@ -2,10 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\ProductResource;
 use Illuminate\Http\Request;
 use App\Models\Cart;
-use App\Models\Category;
-use App\ModelsProduct;
 use App\Models\Product;
 use Inertia\Inertia;
 
@@ -18,14 +17,8 @@ class ProductController extends Controller
      */
     public function index()
     {
-        dd([
-          'products' => Product::paginate(12),
-          'categories' => Category::all(),
-        ]);
-        return [
-          'products' => Product::paginate(12),
-          'categories' => Category::all(),
-        ];
+        return ProductResource::collection(Product::paginate(12));
+  
     }
     
     /**
@@ -92,9 +85,8 @@ class ProductController extends Controller
      */
     public function show(Request $request, int $id)
     {
-      return Inertia::render('Store/ProductPage', [
-        'product' => \App\Models\Product::find($id),
-      ]);
+      return response()->json(\App\Models\Product::find($id));
+      
     }
 
     public function addToCart(Request $request, $id)
