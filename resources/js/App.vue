@@ -6,19 +6,13 @@
     </div>
 </template>
 
-<script setup>
+<script>
+import Dataservice from './api/dataservice.js';
 import StHeader from './components/primitives/st-header.vue';
 import StFooter from './components/primitives/st-footer.vue';
 
-
-
-</script>
-
-</script>
-import Dataservice from './api/dataservice.js';
-
 export const dataservice = new Dataservice();
-<script>
+</script>
 
 <style lang="scss">
 .st-app {
