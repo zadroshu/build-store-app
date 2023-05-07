@@ -21,66 +21,84 @@
       </div>
   
   
-      <!-- <st-product-list :products="products.data"/> -->
-      <!-- <st-pagination :links="products.links"/> -->
+      <st-product-list :products="products.data" />
+      <st-pagination :links="products.links" @changePage="changePage(link)" />
     </div>
   </template>
   
-  <script setup>
+  <script>
   import StPagination from "./primitives/st-pagination.vue";
   import StProductList from "./primitives//st-product-list.vue";
   import Multiselect from 'vue-multiselect'
   import Autocomplete from '@trevoreyre/autocomplete-vue'
-  import {toRaw, onMounted } from 'vue';
+  import { toRaw, ref } from 'vue';
   import axios from 'axios';
   import { dataservice } from "../App.vue";
   
-  
-  const props = defineProps({
-    products: Object,
-    categories: Object,
-  });
-  
-  const comboboxOptions = getComboboxOptions();
-  let comboboxValue = -1;
-  
-  async function search(input) {
-    const results = await axios.get(`products/search-by-name/${input}`);
-    return results.data;
-  }
-  
-  function getResultValue(result) {
-    return result.name;
-  }
-  
-  async function onSubmit(event) {
-    await router.get(`product/${event.id}`);
-  }
-  
-  async function getComboboxOptions() {
-    let categoriesCombobox = [{value: -1,label: 'не выбрано'}];
+  export default {
+    components: {
+        StPagination,
+        StProductList,
+        Multiselect,
+        Autocomplete,
+    },
     
-    return categoriesCombobox;
-  }
-  
-  async function selectCategory(input) {
-    if (input){
-      await axios.get(`products/search-by-category/${input}`);
-    } else {
-      await axios.get('/');
+    data() {
+        return {
+            products: {
+                data: [],
+                links: [],
+            },
+            comboboxOptions: [],
+            comboboxValue: -1,
+        }
+    },
+
+    methods: {
+        async search(input) {
+            const results = await axios.get(`products/search-by-name/${input}`);
+            return results.data;
+        },
+
+        getResultValue(result) {
+            return result.name;
+        },
+
+        async onSubmit(event) {
+            await router.get(`product/${event.id}`);
+        },
+
+        async getComboboxOptions() {
+            let categoriesCombobox = [{value: -1,label: 'не выбрано'}];
+            return categoriesCombobox;
+        },
+
+        async selectCategory(input) {
+            if (input){
+                await axios.get(`products/search-by-category/${input}`);
+            } else {
+                await axios.get('/');
+            }
+        },
+
+        async getData() {
+            return dataservice.products.get();
+        },
+        
+        async changePage(link) {
+            console.log(link);
+        }
+    },
+
+    async mounted() {
+        const response = toRaw(await this.getData());
+        this.products.data = response.data.data;
+        this.products.links = response.data.links;
     }
+    
   }
-
-  onMounted(async () => {
-    console.log('mounted');
-    const products = await dataservice.product.axiosget(2);
-    const product = await dataservice.product.get(1);
-    console.log(JSON.stringify(products));
-    console.log(JSON.stringify(product));
-  })
-
-
   </script>
+
   <style lang="scss">
   .st-index {
     &__toolbar {

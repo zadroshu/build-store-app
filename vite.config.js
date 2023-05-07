@@ -12,7 +12,10 @@ export default defineConfig({
         }
     },
     plugins: [
-        laravel(['resources/js/app.js', 'resources/css/app.scss']),
+        laravel({
+          input: ['resources/js/app.js', 'resources/css/app.scss'],
+          refresh: true,
+        }),
         Vue({
             template: {
                 transformAssetUrls: {
@@ -24,16 +27,16 @@ export default defineConfig({
         svgLoader(),
     ],
     resolve: {
-        alias: {
-          '~fa': path.resolve(__dirname, 'node_modules/@fortawesome/fontawesome-free/scss'),
-          ziggy: path.resolve('vendor/tightenco/ziggy/dist/vue.js'),
-        },
-      },
-      css: {
-        preprocessorOptions: {
-          scss: {
-            additionalData: `@import "resources/css/variables.scss";`
-          }
-        }
-      },
+    	alias: {
+    		'~fa': path.resolve(__dirname, 'node_modules/@fortawesome/fontawesome-free/scss'),
+    		ziggy: path.resolve('vendor/tightenco/ziggy/dist/vue.js'),
+    	},
+    },
+    css: {
+    	preprocessorOptions: {
+    		scss: {
+    			additionalData: `@import "resources/css/variables.scss";`
+    		}
+    	}
+    },
 });

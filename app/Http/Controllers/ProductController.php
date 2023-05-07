@@ -13,11 +13,11 @@ class ProductController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return json
      */
     public function index()
     {
-        return ProductResource::collection(Product::paginate(12));
+        return response()->json(Product::paginate(12));
   
     }
     
@@ -81,11 +81,11 @@ class ProductController extends Controller
      * Display the specified resource.
      *
      * @param int $id
-     * @return \Illuminate\Http\Response
+     * @return json
      */
-    public function show(Request $request, int $id)
+    public function show(int $id)
     {
-      return response()->json(\App\Models\Product::find($id));
+      return response()->json(Product::where('id', $id)->get());
       
     }
 

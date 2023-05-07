@@ -1,21 +1,18 @@
 import axios from "axios";
 
 export default class Dataservice {
-    api_url = import.meta.env.APP_URL;
+    api_url = 'http://localhost:8000';
     dataservice = {
         products: {
             async get() {
-                return await fetch(`${api_url}/api/products`, { method: 'GET' });
+                return await axios.get('http://localhost/api/getProducts');
             },
         },
         product: {
             async get(id) {
-                return await fetch(`${api_url}/api/product/${id}`, { method: 'GET' });
+                return await axios.get(`http://localhost/api/getProduct/${id}`);
             },
 
-            async axiosget(id) {
-                return await axios.get(`${api_url}/api/product/${id}`);
-            }
         },
     }
     
