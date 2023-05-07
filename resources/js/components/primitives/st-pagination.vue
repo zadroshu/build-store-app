@@ -2,18 +2,26 @@
   <div class="st st-pagination" v-if="links.length > 3">
     <div class=" st-pagination__wrapper">
       <template v-for="(link, p) in links" :key="p">
-        <div v-if="link.url === null" class="st-link" v-html="link.label" @click="$emit('changePage', link)"></div>
-        <div v-else :class="{ '--selected': link.active }" :href="link.url" v-html="link.label"></div>
+        <div v-if="link.url === null" class="st-link" v-html="link.label"></div>
+        <div v-else class="st-link" :class="{ '--selected': link.active }" :href="link.url" v-html="link.label" @click="onClick(link)"></div>
       </template>
     </div>
   </div>
 </template>
 
 <script>
-
+import { toRaw } from 'vue';
 export default {
   props: {
     links: Array,
+  },
+
+  emits: ['changePage'],
+
+  methods: {
+    onClick(link) {
+      this.$emit('changePage', toRaw(link));
+    },
   },
 }
 </script>

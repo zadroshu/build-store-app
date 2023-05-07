@@ -131,18 +131,30 @@ class ProductController extends Controller
       return $cart;
     }
 
-    public function searchByName(Request $request, $substring)
+    /**
+     * Display a listing of the resource by name.
+     *
+     * @param int $substring
+     * @return json
+     */
+    public function searchByName($substring)
     {
-      return Product::where('name', 'LIKE', '%'.$substring.'%')->get();
+      return response()->json(Product::where('name', 'LIKE', '%'.$substring.'%')->get());
 
     }
 
-    public function searchByCategory(Request $request, $categoryId)
+    /**
+     * Display a listing of the resource by category.
+     *
+     * @param int $categoryId
+     * @return json
+     */
+    public function searchByCategory($categoryId)
     {
       if($categoryId < 0) {
         return Product::paginate(12);
       } else {
-        return Product::where('category_id', '=', $categoryId)->paginate(12);
+        return response()->json(Product::where('category_id', $categoryId)->paginate(12));
       }
     }
 }

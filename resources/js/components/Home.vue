@@ -2,45 +2,41 @@
     <div class="st-index">
       <div class="st-index__toolbar">
         toolbar
-        <!-- <Multiselect
+        <!-- <multiselect
           class="st-index__multiselect"
           v-model="comboboxValue"
           :options="comboboxOptions"
           @input="selectCategory"
         /> -->
-        <!-- <autocomplete
-        :search="search"
-        placeholder="Поиск..."
-        aria-label="Поиск по товарам"
-        :get-result-value="getResultValue"
-        :debounce-time="100"
-        resultListLabel = "aria-label"
-        @submit="onSubmit"
-        >
-        </autocomplete> -->
+        <st-search />
       </div>
   
   
       <st-product-list :products="products.data" />
-      <st-pagination :links="products.links" @changePage="changePage(link)" />
+      <st-pagination :links="products.links" @change-page="changePage" />
     </div>
   </template>
-  
+    <!-- placeholder="Поиск..."
+    aria-label="Поиск по товарам"
+    :get-result-value="getResultValue"
+    :debounce-time="100"
+    resultListLabel = "aria-label"
+    @submit="onSubmit" -->
   <script>
   import StPagination from "./primitives/st-pagination.vue";
   import StProductList from "./primitives//st-product-list.vue";
-  import Multiselect from 'vue-multiselect'
-  import Autocomplete from '@trevoreyre/autocomplete-vue'
-  import { toRaw, ref } from 'vue';
+  import Multiselect from 'vue-multiselect';
+  import { toRaw } from 'vue';
   import axios from 'axios';
-  import { dataservice } from "../App.vue";
+  import { dataservice } from '../App.vue';
+  import StSearch from './primitives/st-search.vue';
   
   export default {
     components: {
         StPagination,
         StProductList,
         Multiselect,
-        Autocomplete,
+        StSearch,
     },
     
     data() {
@@ -56,16 +52,21 @@
 
     methods: {
         async search(input) {
-            const results = await axios.get(`products/search-by-name/${input}`);
-            return results.data;
+            const response = await dataservice.products.getByName(input);
+            console.log(response);
+            // return response.data;
+            return [{id: 9999, name: 'test'}, {id: 99929, name: 'test2'}];
         },
 
         getResultValue(result) {
-            return result.name;
+            console.log(result);
+            // return toRaw(result).name;
+            return {id: 9999, name: 'test'};
         },
 
-        async onSubmit(event) {
-            await router.get(`product/${event.id}`);
+        async onSubmit(product) {
+            // this.$router.push(`/product/${product.id}`);
+            console.log(product);
         },
 
         async getComboboxOptions() {
@@ -84,16 +85,22 @@
         async getData() {
             return dataservice.products.get();
         },
+
+        setData(response) {
+            this.products.data = response.data.data;
+            this.products.links = response.data.links;
+        },
         
         async changePage(link) {
-            console.log(link);
+            const response = await axios.get(link.url);
+            this.setData(response);
         }
     },
 
     async mounted() {
         const response = toRaw(await this.getData());
-        this.products.data = response.data.data;
-        this.products.links = response.data.links;
+        this.setData(response);
+
     }
     
   }

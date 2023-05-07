@@ -21,3 +21,4 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::get('getProducts', [App\Http\Controllers\ProductController::class, 'index']);
 Route::get('getProduct/{id}', [App\Http\Controllers\ProductController::class, 'show']);
+Route::get('getProductByName/{name}', [App\Http\Controllers\ProductController::class, 'searchByName']);

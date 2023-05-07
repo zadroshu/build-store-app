@@ -7,6 +7,9 @@ export default class Dataservice {
             async get() {
                 return await axios.get('http://localhost/api/getProducts');
             },
+            async getByName(name) {
+                return await axios.get(`http://localhost/api/getProductByName/${name}`);
+            }
         },
         product: {
             async get(id) {
