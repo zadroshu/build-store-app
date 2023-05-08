@@ -2,15 +2,9 @@
     <st-load v-if="isLoading" />
     <div v-else class="st-index">
         <div class="st-index__toolbar">
-            <!-- <multiselect
-            class="st-index__multiselect"
-            v-model="comboboxValue"
-            :options="comboboxOptions"
-            @input="selectCategory"
-            /> -->
+            <st-combobox :values="comboboxData" @select="onComboboxSelect" />
             <st-search />
       </div>
-  
   
       <st-product-list :products="products.data" />
       <st-pagination :links="products.links" @change-page="changePage" />
@@ -19,7 +13,6 @@
   <script>
   import StPagination from "./primitives/st-pagination.vue";
   import StProductList from "./primitives//st-product-list.vue";
-  import Multiselect from 'vue-multiselect';
   import { toRaw } from 'vue';
   import axios from 'axios';
   import { dataservice } from '../App.vue';
@@ -29,7 +22,6 @@
     components: {
         StPagination,
         StProductList,
-        Multiselect,
         StSearch,
     },
     
@@ -39,26 +31,12 @@
                 data: [],
                 links: [],
             },
-            comboboxOptions: [],
-            comboboxValue: -1,
+            comboboxData: [{id: -1, displayName: 'Все'}],
             isLoading: true,
         }
     },
 
     methods: {
-        async getComboboxOptions() {
-            let categoriesCombobox = [{value: -1,label: 'не выбрано'}];
-            return categoriesCombobox;
-        },
-
-        async selectCategory(input) {
-            if (input){
-                await axios.get(`products/search-by-category/${input}`);
-            } else {
-                await axios.get('/');
-            }
-        },
-
         async getData() {
             this.isLoading = true;
             const response = dataservice.products.get();
@@ -67,23 +45,40 @@
             return response;
         },
 
+        async getCategories() {
+            this.isLoading = true;
+            const response = await dataservice.categories.get();
+            this.isLoading = false;
+
+            return response;
+        },
+
+        setComboboxData(data) {
+            data.forEach(item => this.comboboxData.push({ id: item.id, displayName: item.name }));
+        },
+
         setData(response) {
             this.products.data = response.data.data;
             this.products.links = response.data.links;
+        },
+
+        onComboboxSelect(event) {
+            console.log(event);
         },
         
         async changePage(link) {
             this.isLoading = true;
             const response = await axios.get(link.url);
             this.setData(response);
-            isLoading = false;
+            this.isLoading = false;
         }
     },
 
     async mounted() {
-        const response = toRaw(await this.getData());
-        this.setData(response);
+        const dataResponse = toRaw(await this.getData());
+        this.setData(dataResponse);
 
+        this.setComboboxData(toRaw(await this.getCategories()).data);
     }
     
   }
@@ -93,6 +88,8 @@
   .st-index {
     &__toolbar {
       display: flex;
+      justify-content: space-between;
+      margin: 0 $--st-offset-xxl;
     }
     &__multiselect {
       max-width: 30%;

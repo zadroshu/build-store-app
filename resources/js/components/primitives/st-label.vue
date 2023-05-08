@@ -6,9 +6,9 @@
 
 <script setup>
 const props = defineProps({
-  value: String || Number,
-  disabled: Boolean,
-  color: String,
+  value: String | Number,
+  disabled: Boolean | undefined,
+  color: String | undefined,
 });
 </script>
 
@@ -26,6 +26,6 @@ const props = defineProps({
     color: $--st-black;
   }
   [color = 'white'].st-label {
-    color: $--st-black;
+    color: $--st-white;
   }
 </style>

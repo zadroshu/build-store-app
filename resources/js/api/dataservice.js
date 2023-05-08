@@ -24,6 +24,11 @@ export default class Dataservice {
                 return await axios.post(`${window.apiUrl}/api/addToCart/${id}`);
             },
         },
+        categories: {
+            async get() {
+                return await axios.get(`${window.apiUrl}/api/getCategories`);
+            },
+        },
     }
 }
 
