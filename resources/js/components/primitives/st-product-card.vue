@@ -22,7 +22,7 @@
 import StLabel from "./st-label.vue";
 import {ref} from "vue";
 import addToCartIcon from '../../../../public/assets/icons/add-to-cart.svg';
-import axios from "axios";
+import { dataservice } from '../../App.vue';
 import { useRouter } from 'vue-router'
 
 const props = defineProps({
@@ -32,7 +32,8 @@ const router = useRouter();
 let isHover = ref(false);
 
 async function addToCart(id) {
-    await axios.get(`product/add-to-cart/${id}`);
+    await dataservice.cart.post(id);
+    await dataservice.cart.get();
 }
 
 function goToProduct(item) {

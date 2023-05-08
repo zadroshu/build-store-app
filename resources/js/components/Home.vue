@@ -41,7 +41,7 @@
             },
             comboboxOptions: [],
             comboboxValue: -1,
-            isLoading: false,
+            isLoading: true,
         }
     },
 

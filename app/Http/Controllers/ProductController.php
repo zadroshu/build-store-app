@@ -2,23 +2,26 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Resources\ProductResource;
 use Illuminate\Http\Request;
-use App\Models\Cart;
 use App\Models\Product;
-use Inertia\Inertia;
+use Symfony\Component\HttpFoundation\Session\Session;
 
 class ProductController extends Controller
 {
+    protected $session ;
+
+    function __construct() {
+        $this->session  = new Session();
+    }
+
     /**
-     * Display a listing of the resource.
+     * Returns a listing of the resource.
      *
      * @return json
      */
     public function index()
     {
         return response()->json(Product::paginate(12));
-  
     }
     
     /**
@@ -29,18 +32,18 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-      $validate = $request->validate([
-        'name' => 'required|string|max:191',
-        'category' => 'required|int',
-        'cost' => 'required|int',
-        'discount' => 'required|int',
-        'description' => 'required|string|max:1000',
-        'images' => 'nullable|string|max:255',
-        'in_stock' => 'required|int',
-      ]);
+        $validate = $request->validate([
+            'name' => 'required|string|max:191',
+            'category' => 'required|int',
+            'cost' => 'required|int',
+            'discount' => 'required|int',
+            'description' => 'required|string|max:1000',
+            'images' => 'nullable|string|max:255',
+            'in_stock' => 'required|int',
+        ]);
 
-      $product = new Product($validate);
-      $product->save();
+        $product = new Product($validate);
+        $product->save();
     }
 
     /**
@@ -53,17 +56,17 @@ class ProductController extends Controller
     public function update(Request $request, Product $product)
     {
 
-      $validated = $request->validate([
-        'name' => 'required|string|max:191',
-        'category' => 'required|int',
-        'cost' => 'required|int',
-        'discount' => 'required|int',
-        'description' => 'required|string|max:1000',
-        'images' => 'nullable|string|max:255',
-        'in_stock' => 'required|int',
-      ]);
+        $validated = $request->validate([
+            'name' => 'required|string|max:191',
+            'category' => 'required|int',
+            'cost' => 'required|int',
+            'discount' => 'required|int',
+            'description' => 'required|string|max:1000',
+            'images' => 'nullable|string|max:255',
+            'in_stock' => 'required|int',
+        ]);
 
-      $product->update($validated);
+        $product->update($validated);
     }
 
     /**
@@ -78,83 +81,97 @@ class ProductController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * Returns the specified resource.
      *
      * @param int $id
      * @return json
      */
     public function show(int $id)
     {
-      return response()->json(Product::where('id', $id)->get());
+        return response()->json(Product::where('id', $id)->get());
       
     }
 
-    public function addToCart(Request $request, $id)
+    /**
+     * Update cart product by id.
+     *
+     * @param int $id
+     * @return json
+     */
+    public function updateCart(Request $request)
     {
-      $product = Product::findOrFail($id);
-      $oldCart = session()->has('cart') ? session()->get('cart') : null;
-      $cart = new Cart($oldCart);
-      $cart->add($product, $product->id);
-
-      $request->session()->put('cart', $cart);
-
-      return $request->session()->get('cart');
+    //  
     }
 
-    public function getCart()
+    public function deleteProduct(int $id)
     {
-      $cart = session()->get('cart', []);
-      $keys = array_keys($cart);
+    //    
+    }
 
-      $products = Product::findMany($keys);
+    /**
+     * Add to cart product by id.
+     *
+     * @param int $id
+     * @return json
+     */
+    public function addToCart(Request $request, int $id)
+    {
+        $cart = $this->session->get('cart', []);
+        $product = Product::find($id);
 
-      return Inertia::render('Store/Cart', [
-        'products' => $products,
-      ]);
+        if(isset($cart[$id])) {
+            $cart[$id]['quantity']++;
+        } else {
+            $cart[$id] = [
+                "name" => $product->name,
+                "quantity" => 1,
+                "cost" => $product->cost,
+            ];
+        }
+        $this->session->set('cart', $cart);
+        return response()->json($cart);
+    }
+
+    /**
+     * Returns cart.
+     *
+     * @return json
+     */
+    public function getCart(Request $request)
+    {
+        $cart = $this->session->get('cart', []);
+        return response()->json($cart);
     }
 
     public function deleteFromCart(Request $request, $id)
     {
-      $cart = $request->session()->get('cart', []);
-
-      foreach ( $cart as $item ) {
-        if (array_key_exists('product_id', $item) and $item['product_id'] == $id) {
-          if ($item['quantity'] > 0) {
-            $item['quantity'] = $item['quantity'] - 1;
-          } else {
-            unset($cart, $item);
-          }
-        }
-      }
-
-      $request->session()->put('cart', $cart);
-      return $cart;
+        // 
     }
 
     /**
-     * Display a listing of the resource by name.
+     * Returns a listing of the resource by name.
      *
      * @param int $substring
      * @return json
      */
     public function searchByName($substring)
     {
-      return response()->json(Product::where('name', 'LIKE', '%'.$substring.'%')->get());
+        return response()->json(Product::where('name', 'LIKE', '%'.$substring.'%')->get());
 
     }
 
     /**
-     * Display a listing of the resource by category.
+     * Returns a listing of the resource by category.
      *
      * @param int $categoryId
      * @return json
      */
     public function searchByCategory($categoryId)
     {
-      if($categoryId < 0) {
-        return Product::paginate(12);
-      } else {
-        return response()->json(Product::where('category_id', $categoryId)->paginate(12));
-      }
+        if($categoryId < 0) {
+            return Product::paginate(12);
+        } else {
+            return response()->json(Product::where('category_id', $categoryId)->paginate(12));
+        }
     }
 }
