@@ -4,53 +4,83 @@
             <st-input type="text" v-model="searchString" placeholder="Поиск..." />
             <searchIcon />
         </div>
-        <div v-if="response.length > 0" class="st-search__results">
-            <div v-for="item in response" class="st-search__result-item">
+        <div v-if="isResponse" class="st-search__results">
+            <div v-for="item in response" class="st-search__result-item" @click="goToProduct(item)" >
                 <st-label :value="item.name" />
             </div>
         </div>
     </div>
 </template>
 
-<script>
-import {ref, watch, toRaw} from 'vue';
-import useDebouncedRef from '../../utils/debounce';
-import { dataservice } from '../../App.vue';
+<script setup>
 import searchIcon from '../../../../public/assets/icons/search-icon.svg';
+</script>
+
+<script>
+import { ref, watch, computed } from 'vue';
+import { dataservice } from '../../App.vue';
+import useDebouncedRef from '../../utils/debounce';
 
 export default {
-    setup() {
+    data() {
+        return {
+            searchString: useDebouncedRef('', 500),
+            response: [],
+        }
+    },
 
-        let searchString = useDebouncedRef('', 400);
-        let response = ref([]);
+    methods: {
+        isResponse() {
+            return this.response.length > 0;
+        },
 
-        async function search(event) {
+        async search(event) {
             return await dataservice.products.getByName(event);
-        };
+        },
 
-        watch(searchString, async (newSearchString, oldSearchString) => {
-            response = toRaw(await search(newSearchString).data);
-            console.log(await search(newSearchString));
-        })
+        goToProduct(item) {
+            this.$router.push({ name: 'product', params: { id: item.id } });
+        }
+    },
 
-        return { response, searchString };
+    watch: {
+        async searchString(newSearchString, oldSearchString) {
+            this.response = (await this.search(newSearchString)).data;
+        }
     },
 }
 </script>
 
 <style lang="scss">
 .st-search {
+    position: relative;
+
     &__toolbar {
         display: flex;
+        align-items: center;
     }
 
     &__results {
-        max-height: 10rem;
+        max-height: 25rem;
+        width: 100%;
         display: grid;
-        grid-template-columns: min-content;
+        grid-template-columns: 100%;
         gap: $--st-offset-xs;
 
+        position: absolute;
         background-color: #fff;
+        margin-top: $--st-offset-xs;
+        overflow: auto;
+    }
+
+    &__result-item {
+        padding-left: $--st-offset-xs;
+        min-width: 1rem;
+        cursor: pointer;
+    }
+
+    &__result-item:hover {
+        background-color: $--st-input-bg;
     }
 }
 </style>

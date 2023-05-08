@@ -1,7 +1,7 @@
 <template>
   <div class="st-product-card">
     <div class="st-product-card__img-wrapper">
-      <div >
+      <div @click="goToProduct(product)">
         <img class="st-product-card__img-wrapper-img" src="https://via.placeholder.com/250x310/09f/fff.png">
       </div>
       <div preserve-scroll class="st-product-card__img-add-to-cart" @click="addToCart(product.id)">
@@ -23,14 +23,20 @@ import StLabel from "./st-label.vue";
 import {ref} from "vue";
 import addToCartIcon from '../../../../public/assets/icons/add-to-cart.svg';
 import axios from "axios";
+import { useRouter } from 'vue-router'
 
 const props = defineProps({
-  product: Object,
-})
+    product: Object,
+});
+const router = useRouter();
 let isHover = ref(false);
 
 async function addToCart(id) {
-  await axios.get(`product/add-to-cart/${id}`);
+    await axios.get(`product/add-to-cart/${id}`);
+}
+
+function goToProduct(item) {
+    router.push({ name: 'product', params: { id: item.id } });
 }
 
 </script>
@@ -46,7 +52,7 @@ async function addToCart(id) {
 
   &__img-wrapper {
     position: relative;
-
+    cursor: pointer;
     border-radius: 1rem;
   }
 

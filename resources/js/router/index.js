@@ -10,12 +10,13 @@ export const routes = [
     {
         name: 'product',
         path: '/product/:id',
-        component: ProductPage
+        component: ProductPage,
+        props: route => ({ id: parseInt(route.params.id) })
     }
 ];
 
 const router = createRouter({
-    history: createWebHistory(),
+    history: createWebHistory(window.apiUrl),
     routes
 });
 
