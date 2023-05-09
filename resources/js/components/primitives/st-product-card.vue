@@ -33,7 +33,6 @@ let isHover = ref(false);
 
 async function addToCart(id) {
     await dataservice.cart.post(id);
-    await dataservice.cart.get();
 }
 
 function goToProduct(item) {

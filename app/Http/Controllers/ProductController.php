@@ -168,10 +168,7 @@ class ProductController extends Controller
      */
     public function searchByCategory($categoryId)
     {
-        if($categoryId < 0) {
-            return Product::paginate(12);
-        } else {
-            return response()->json(Product::where('category_id', $categoryId)->paginate(12));
-        }
+        return response()->json(Product::where('category_id', $categoryId)->paginate(12));
+        
     }
 }

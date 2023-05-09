@@ -1,13 +1,14 @@
 <template>
-    <st-load v-if="isLoading" />
-    <div v-else class="st-index">
+    <div class="st-index">
         <div class="st-index__toolbar">
             <st-combobox :values="comboboxData" @select="onComboboxSelect" />
             <st-search />
-      </div>
-  
-      <st-product-list :products="products.data" />
-      <st-pagination :links="products.links" @change-page="changePage" />
+        </div>
+        <st-load v-if="isLoading" />
+        <div class="st-index__content" v-else>
+            <st-product-list :products="products.data" />
+            <st-pagination :links="products.links" @change-page="changePage" />
+        </div>
     </div>
   </template>
   <script>
@@ -62,8 +63,16 @@
             this.products.links = response.data.links;
         },
 
-        onComboboxSelect(event) {
-            console.log(event);
+        async onComboboxSelect(item) {
+            let response = {};
+            if(item.id === -1) {
+                response = toRaw(await this.getData());
+            } else {
+                this.isLoading = true;
+                response = toRaw(await dataservice.products.searchByCategory(item.id));
+                this.isLoading = false;
+            }
+            this.setData(response);
         },
         
         async changePage(link) {
@@ -86,6 +95,7 @@
 
   <style lang="scss">
   .st-index {
+    height: 100%;
     &__toolbar {
       display: flex;
       justify-content: space-between;
@@ -93,6 +103,9 @@
     }
     &__multiselect {
       max-width: 30%;
+    }
+    &__content {
+        height: 100%;
     }
   }
   </style>

@@ -4,7 +4,7 @@
             <st-input type="text" v-model="searchString" placeholder="Поиск..." />
             <searchIcon />
         </div>
-        <div v-if="isResponse" class="st-search__results">
+        <div v-if="isResponse && searchString != ''" class="st-search__results">
             <div v-for="item in response" class="st-search__result-item" @click="goToProduct(item)" >
                 <st-label :value="item.name" />
             </div>
@@ -66,6 +66,8 @@ export default {
         display: grid;
         grid-template-columns: 100%;
         gap: $--st-offset-xs;
+        padding-left: $--st-offset-xs;
+        padding-bottom: $--st-offset-xs;
 
         position: absolute;
         background-color: #fff;
@@ -74,7 +76,6 @@ export default {
     }
 
     &__result-item {
-        padding-left: $--st-offset-xs;
         min-width: 1rem;
         cursor: pointer;
     }

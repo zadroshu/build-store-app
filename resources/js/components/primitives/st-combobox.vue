@@ -73,6 +73,7 @@ export default {
         grid-template-columns: 100%;
         gap: $--st-offset-l;
         padding-left: $--st-offset-xs;
+        padding-bottom: $--st-offset-xs;
 
         position: absolute;
         background-color: #fff;
