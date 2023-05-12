@@ -66,6 +66,8 @@ export default {
         display: grid;
         grid-template-columns: 100%;
         gap: $--st-offset-xs;
+        justify-content: center;
+        
         padding-left: $--st-offset-xs;
         padding-bottom: $--st-offset-xs;
 

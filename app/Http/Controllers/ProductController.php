@@ -38,7 +38,7 @@ class ProductController extends Controller
             'cost' => 'required|int',
             'discount' => 'required|int',
             'description' => 'required|string|max:1000',
-            'images' => 'nullable|string|max:255',
+            'image' => 'nullable|string|max:255',
             'in_stock' => 'required|int',
         ]);
 
@@ -62,7 +62,7 @@ class ProductController extends Controller
             'cost' => 'required|int',
             'discount' => 'required|int',
             'description' => 'required|string|max:1000',
-            'images' => 'nullable|string|max:255',
+            'image' => 'nullable|string|max:255',
             'in_stock' => 'required|int',
         ]);
 
@@ -123,6 +123,7 @@ class ProductController extends Controller
             $cart[$id]['quantity']++;
         } else {
             $cart[$id] = [
+                "id" => $product->id,
                 "name" => $product->name,
                 "quantity" => 1,
                 "cost" => $product->cost,

@@ -19,7 +19,7 @@
         $table->unsignedInteger('cost');
         $table->unsignedInteger('discount');
         $table->text('description');
-        $table->string('images')->nullable();
+        $table->string('image')->nullable();
         $table->unsignedInteger('in_stock');
         $table->timestamps();
       });

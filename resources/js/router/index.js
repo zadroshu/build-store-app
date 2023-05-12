@@ -19,7 +19,6 @@ export const routes = [
         name: 'cart',
         path: '/cart',
         component: Cart,
-        props: route => ({ products: route.params.products }),
     },
 ];
 

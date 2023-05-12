@@ -9,11 +9,18 @@
 <script setup>
 import StHeader from './components/primitives/st-header.vue';
 import StFooter from './components/primitives/st-footer.vue';
+import { onMounted } from 'vue';
+import { useStore } from 'vuex';
+
+
+const store = useStore();
+onMounted(() => {
+    store.commit('cart/updateCartFromLocalStorage');
+})
 </script>
 
 <script>
 import Dataservice from './api/dataservice';
-
 export const dataservice = new Dataservice().dataservice;
 </script>
 

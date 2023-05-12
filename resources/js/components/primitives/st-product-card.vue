@@ -4,7 +4,7 @@
       <div @click="goToProduct(product)">
         <img class="st-product-card__img-wrapper-img" src="https://via.placeholder.com/250x310/09f/fff.png">
       </div>
-      <div preserve-scroll class="st-product-card__img-add-to-cart" @click="addToCart(product.id)">
+      <div preserve-scroll class="st-product-card__img-add-to-cart" @click="addToCart(product)">
         <addToCartIcon
           :class="{'st-product-card--hover': isHover}"
           @mouseenter="isHover = true"
@@ -23,16 +23,20 @@ import StLabel from "./st-label.vue";
 import {ref} from "vue";
 import addToCartIcon from '../../../../public/assets/icons/add-to-cart.svg';
 import { dataservice } from '../../App.vue';
-import { useRouter } from 'vue-router'
+import { useRouter } from 'vue-router';
+import { useStore } from 'vuex';
+import { mapActions } from 'vuex';
 
+const store = useStore();
 const props = defineProps({
     product: Object,
 });
 const router = useRouter();
 let isHover = ref(false);
 
-async function addToCart(id) {
-    await dataservice.cart.post(id);
+async function addToCart(product) {
+    store.dispatch('cart/addToCart', product);
+    // console.log(store.getters.productQuantity(product));
 }
 
 function goToProduct(item) {

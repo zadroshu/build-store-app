@@ -1,8 +1,10 @@
 import './bootstrap';
-import { createApp } from 'vue'
+import { createApp } from 'vue';
 import VueAxios from 'vue-axios';
 import router from './router/index.js';
 import axios from 'axios';
+import store from "./store";
+
 import App from './App.vue';
 import StButton from './components/primitives/st-button.vue';
 import StInput from './components/primitives/st-input.vue';
@@ -14,6 +16,7 @@ window.apiUrl = 'http://localhost';
 
 const app = createApp(App);
 
+
 app
     .component('StButton', StButton)
     .component('StInput', StInput)
@@ -23,6 +26,7 @@ app
 
 app
     .use(router)
+    .use(store)
     .use(VueAxios, axios)
     .mount('#app');
 

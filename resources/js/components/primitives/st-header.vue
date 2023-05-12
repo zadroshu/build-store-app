@@ -4,12 +4,12 @@
         <div class="st-app-header__phone">
           8-961-502-50-40
         </div>
-        <div class="st-app-header__logo" @click="goToHome">
+        <div class="st-app-header__logo" @click="goHome">
           <mainLogo />
         </div>
         <div class="st-app-header__cart">
-            <div v-if="cartCount > 0" class="st-app-header__cart-counter">
-            
+            <div v-if="totalQuantity > 0" class="st-app-header__cart-counter">
+                <st-label :value="totalQuantity" />
             </div>
             <div class="st-app-header__cart-icon">
                 <cartIcon @click="goToCart" />
@@ -22,40 +22,24 @@
 <script setup>
 import mainLogo from '../../../../public/assets/icons/logo.svg';
 import cartIcon from '../../../../public/assets/icons/cart.svg';
-</script>
+import { useStore } from 'vuex';
+import { useRouter } from 'vue-router';
+import { computed } from 'vue';
 
-<script>
-import { dataservice } from '../../App.vue';
+const store = useStore();
+const router = useRouter();
 
-export default {
-    data() {
-        return {
-            cartCount: 0,
-        }
-    },
+const totalQuantity = computed(() => { 
+    return store.getters['cart/totalQuantity'];
+}); 
 
-    methods: {
-        async getCart() {
-            return await dataservice.cart.get();
-        },
+function goHome() {
+    router.push({name: 'home'});
+};
 
-        getCartCount(data) {
-            data.forEach(item => this.cartCount += item.quantity);
-        },
-
-        goToCart() {
-            this.$router.push({name: 'cart', params: { products: [{id: 1, name: 'Test', cost: 1090 }] }});
-        },
-
-        goToHome() {
-            this.$router.push({name: 'home'});
-        },
-    },
-
-    async mounted() {
-        console.log((await this.getCart()).data);
-    },
-}
+function goToCart() {
+    router.push({name: 'cart'});
+};
 </script>
   
 <style lang="scss">
@@ -80,8 +64,8 @@ export default {
     }
     
     &__cart-counter {
-        width: 2.25rem;
-        height: 1.75rem;
+        width: 3.25rem;
+        height: 2.55rem;
         text-align: center;
         border: 1px solid $--st-gray;
         color: $--st-white;
