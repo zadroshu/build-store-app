@@ -17,19 +17,24 @@ const props = defineProps({
 
 <style scoped lang="scss">
 .st-button {
-  width: 16.5rem;
-  height: 4.9rem;
-
-  background-color: $--st-white;
+  // width: 16.5rem;
+  // height: 4.9rem;
+  padding: $--st-offset-m $--st-offset-l;
+  border: none;
   border-radius: 10px;
-  border: 2px solid $--st-red;
+  text-decoration: none;
+  color: white;
+  background: #0B63F6;
+  box-shadow: 0 0.5rem 0 #003CC5;
 
   cursor: pointer;
 }
 
 .st-button:hover {
-  background-color: $--st-input-bg;
-  transition-delay: .2ms;
+  background: #003CC5;
+  box-shadow: none;
+  position: relative;
+  top: 5px;
 }
 
 </style>

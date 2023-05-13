@@ -22,10 +22,8 @@
 import StLabel from "./st-label.vue";
 import {ref} from "vue";
 import addToCartIcon from '../../../../public/assets/icons/add-to-cart.svg';
-import { dataservice } from '../../App.vue';
 import { useRouter } from 'vue-router';
 import { useStore } from 'vuex';
-import { mapActions } from 'vuex';
 
 const store = useStore();
 const router = useRouter();
@@ -35,9 +33,7 @@ const props = defineProps({
 });
 
 async function addToCart(product) {
-  console.log();
     store.dispatch('cart/addToCart', product);
-    // console.log(store.getters.productQuantity(product));
 }
 
 function goToProduct(item) {

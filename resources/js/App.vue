@@ -1,7 +1,9 @@
 <template>
     <div class="st-app">
         <st-header />
-        <router-view />
+        <div class="st-app__content">
+            <router-view />
+        </div>
         <st-footer />
     </div>
 </template>
@@ -26,10 +28,17 @@ export const dataservice = new Dataservice().dataservice;
 
 <style lang="scss">
 .st-app {
+    height: 100vh; /* for shorter content */
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
-    align-content: stretch;
-    min-height: 100%;
+
+    display: -ms-flexbox;
+    -ms-flex-direction: column;
+
+    &__content {
+        flex: 1;
+        /*ie10*/
+        -ms-flex: 1 1 auto; /*needs both shrink and grow*/
+    }
 }
 </style>

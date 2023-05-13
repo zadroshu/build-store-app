@@ -210,9 +210,9 @@ class ProductController extends Controller
 
         // dump($isCategory);
         $products = DB::table('products')
-            ->when($categoryId, function(Builder $query, int $categoryId) {
+            ->when($categoryId != -1, function(Builder $query, int $categoryId) {
                 // dump($categoryId);
-                $query->where('category_id', $categoryId);
+                $query->where('category_id','=', $categoryId);
             })
             ->when($sortId == 0, function(Builder $query, int $sortId) {
               

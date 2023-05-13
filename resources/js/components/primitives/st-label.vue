@@ -16,9 +16,8 @@ const props = defineProps({
 <style scoped lang="scss">
   .st-label {
     height: 1.4rem;
-    width: 100%;
-
-    margin: $--st-offset-xs 0;
+    margin: $--st-offset-xs $--st-offset-m;
+    
   }
   [color = 'gray'].st-label {
     color: $--st-gray;
