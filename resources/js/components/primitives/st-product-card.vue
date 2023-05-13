@@ -28,13 +28,14 @@ import { useStore } from 'vuex';
 import { mapActions } from 'vuex';
 
 const store = useStore();
+const router = useRouter();
+let isHover = ref(false);
 const props = defineProps({
     product: Object,
 });
-const router = useRouter();
-let isHover = ref(false);
 
 async function addToCart(product) {
+  console.log();
     store.dispatch('cart/addToCart', product);
     // console.log(store.getters.productQuantity(product));
 }

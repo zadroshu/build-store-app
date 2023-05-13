@@ -1,11 +1,15 @@
 <template>
     <div class="st-cart">
         <div v-if="cart?.length > 0" class="st-cart__grid">
+            <st-label class="st-cart__grid-header" :bold="true" value="Наименование товара"/>
+            <st-label class="st-cart__grid-header" value="Количество" />
+            <st-label class="st-cart__grid-header" value="Стоимость"/>
+            <st-label class="st-cart__grid-header" value=""/>
             <template v-for="cartItem in cart" :key="cartItem?.product?.id">
-            <st-label :value="cartItem?.product?.name"/>
-            <st-label :value="cartItem.quantity" />
-            <st-label :value="cartItem?.product?.cost"/>
-            <deleteIcon class="st-cart__delete-icon" @click="deleteFromCart(cartItem)"/>
+                <st-label class="st-cart__grid-item" :value="cartItem?.product?.name"/>
+                <st-label class="st-cart__grid-item" :value="cartItem.quantity" />
+                <st-label class="st-cart__grid-item" :value="cartItem?.product?.cost * cartItem.quantity"/>
+                <div class="st-cart__grid-item"  @click="deleteFromCart(cartItem)"><deleteIcon class="st-cart__delete-icon" /></div>
             </template>
         </div>
     
@@ -37,11 +41,11 @@ async function deleteFromCart(cartItem) {
 <style lang="scss">
 .st-cart {
   &__grid {
+    margin: 0 auto;
     display: grid;
     grid-template-columns: auto auto auto min-content;
     justify-content: center;
     align-items: center;
-    grid-gap: $--st-offset-xl;
   }
 
   &__delete-icon:hover {
@@ -54,6 +58,16 @@ async function deleteFromCart(cartItem) {
     height: $--st-offset-l;
     cursor: pointer;
     fill: $--st-gray;
+  }
+
+  &__grid-header {
+    font-weight: 700;
+    margin-right: 2rem;
+  }
+
+  &__grid-item {
+    height: 2rem;
+    border-top: 1px solid;
   }
 
 

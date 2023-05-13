@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use DB;
+use Illuminate\Database\Query\Builder;
 use Illuminate\Http\Request;
 use App\Models\Product;
 use Symfony\Component\HttpFoundation\Session\Session;
@@ -171,5 +173,57 @@ class ProductController extends Controller
     {
         return response()->json(Product::where('category_id', $categoryId)->paginate(12));
         
+    }
+
+    /**
+     * Returns a listing of the resource by cost low to hight.
+     *
+     * @param int $categoryId
+     * @return json
+     */
+    public function sortLowtoHight($categoryId)
+    {
+        if ($categoryId !== -1) {
+            return response()->json(Product::where('category_id', $categoryId)->orderBy('cost', 'asc')->paginate(12));
+        }
+
+        return response()->json(Product::all()->orderBy('cost', 'asc')->paginate(12));
+    }
+
+    /**
+     * Returns a listing of the resource by cost hight to low.
+     *
+     * @param int $categoryId
+     * @return json
+     */
+    public function sortHightToLow($categoryId)
+    {
+        if ($categoryId !== -1) {
+            return response()->json(Product::where('category_id', $categoryId)->orderBy('cost', 'desc')->paginate(12));
+        }
+
+        return response()->json(Product::all()->orderBy('cost', 'desc')->paginate(12));
+    }
+
+    public function sort(int $categoryId, int $sortId)
+    {   
+
+        // dump($isCategory);
+        $products = DB::table('products')
+            ->when($categoryId, function(Builder $query, int $categoryId) {
+                // dump($categoryId);
+                $query->where('category_id', $categoryId);
+            })
+            ->when($sortId == 0, function(Builder $query, int $sortId) {
+              
+                $query->orderBy('cost', 'desc');
+            })
+            ->when($sortId == 1, function(Builder $query, int $sortId) {
+                
+                $query->orderBy('cost', 'asc');
+            })
+            ->paginate(12);
+            
+        return response()->json($products);
     }
 }

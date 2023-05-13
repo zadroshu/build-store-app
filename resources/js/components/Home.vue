@@ -1,7 +1,8 @@
 <template>
     <div class="st-index">
         <div class="st-index__toolbar">
-            <st-combobox :values="comboboxData" @select="onComboboxSelect" />
+            <st-combobox :values="categoryComboboxData" @select="sortProductsByCategory" />
+            <st-combobox :values="sortComboboxData" :defaultValue="defailtCostValue" @select="sortProductsByCost" />
             <st-search />
         </div>
         <st-load v-if="isLoading" />
@@ -32,7 +33,15 @@
                 data: [],
                 links: [],
             },
-            comboboxData: [{id: -1, displayName: 'Все'}],
+            categoryComboboxData: [{id: -1, displayName: 'Все'}],
+            sortComboboxData: [
+                {id: -1, displayName: 'Без сортировки'},
+                {id: 0, displayName: 'По убыванию цены'},
+                {id: 1, displayName: 'По возрастанию цены'},
+            ],
+            defailtCostValue: {id: -1, displayName: 'Без сортировки'},
+            selectedCategorySearchId: -1,
+            selectedCostSortId: -1,
             isLoading: true,
         }
     },
@@ -55,7 +64,7 @@
         },
 
         setComboboxData(data) {
-            data.forEach(item => this.comboboxData.push({ id: item.id, displayName: item.name }));
+            data.forEach(item => this.categoryComboboxData.push({ id: item.id, displayName: item.name }));
         },
 
         setData(response) {
@@ -63,15 +72,18 @@
             this.products.links = response.data.links;
         },
 
-        async onComboboxSelect(item) {
-            let response = {};
-            if(item.id === -1) {
-                response = toRaw(await this.getData());
-            } else {
-                this.isLoading = true;
-                response = toRaw(await dataservice.products.searchByCategory(item.id));
-                this.isLoading = false;
-            }
+        async sortProductsByCategory(event) {
+            this.selectedCategorySearchId = event.id;
+            await this.sortProducts()
+        },
+
+        async sortProductsByCost(event) {
+            this.selectedCostSortId = event.id;
+            await this.sortProducts()
+        },
+
+        async sortProducts() {
+            let response = await dataservice.products.sortProducts(this.selectedCategorySearchId, this.selectedCostSortId);
             this.setData(response);
         },
         

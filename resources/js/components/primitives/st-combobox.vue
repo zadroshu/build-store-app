@@ -31,7 +31,7 @@ export default {
 
         defaultValue: {
             type: Object,
-            default: { id: -1, displayName: 'Все' },
+            default: { id: -1, displayName: 'Все категории' },
         },
     },
 
@@ -82,6 +82,7 @@ export default {
         background-color: #fff;
         margin-top: $--st-offset-xs;
         overflow: auto;
+        z-index: 9999;
     }
 
     &__popup-item {

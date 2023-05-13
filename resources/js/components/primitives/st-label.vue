@@ -1,6 +1,6 @@
 <template>
   <div class="st-label">
-    <span :color="color">{{value}}</span>
+    <span :bold="bold ? bold : false" :color="color">{{value}}</span>
   </div>
 </template>
 
@@ -9,6 +9,7 @@ const props = defineProps({
   value: String | Number,
   disabled: Boolean | undefined,
   color: String | undefined,
+  bold: Boolean | undefined,
 });
 </script>
 
@@ -27,5 +28,9 @@ const props = defineProps({
   }
   [color = 'white'].st-label {
     color: $--st-white;
+  }
+
+  [bold = 'true'].st-label {
+    font-weight: 700;
   }
 </style>
