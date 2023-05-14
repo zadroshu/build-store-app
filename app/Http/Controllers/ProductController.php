@@ -176,43 +176,23 @@ class ProductController extends Controller
     }
 
     /**
-     * Returns a listing of the resource by cost low to hight.
+     * Returns a listing of the resource by category and cost.
      *
      * @param int $categoryId
+     * @param int $sortId
      * @return json
      */
-    public function sortLowtoHight($categoryId)
-    {
-        if ($categoryId !== -1) {
-            return response()->json(Product::where('category_id', $categoryId)->orderBy('cost', 'asc')->paginate(12));
-        }
-
-        return response()->json(Product::all()->orderBy('cost', 'asc')->paginate(12));
-    }
-
-    /**
-     * Returns a listing of the resource by cost hight to low.
-     *
-     * @param int $categoryId
-     * @return json
-     */
-    public function sortHightToLow($categoryId)
-    {
-        if ($categoryId !== -1) {
-            return response()->json(Product::where('category_id', $categoryId)->orderBy('cost', 'desc')->paginate(12));
-        }
-
-        return response()->json(Product::all()->orderBy('cost', 'desc')->paginate(12));
-    }
 
     public function sort(int $categoryId, int $sortId)
     {   
 
         // dump($isCategory);
         $products = DB::table('products')
-            ->when($categoryId != -1, function(Builder $query, int $categoryId) {
+            ->when($categoryId, function(Builder $query, int $categoryId) {
                 // dump($categoryId);
-                $query->where('category_id','=', $categoryId);
+                if ($categoryId != -1) {
+                    return $query->where('category_id', $categoryId);;
+                }
             })
             ->when($sortId == 0, function(Builder $query, int $sortId) {
               

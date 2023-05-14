@@ -27,10 +27,9 @@ Route::get('searchByCategory/{id}', [App\Http\Controllers\ProductController::cla
 Route::get('sortProducts/{categoryId}/{sortId}', [App\Http\Controllers\ProductController::class, 'sort']);
 
 
-Route::get('sortProductLowToHight/{catrgoryId}', [App\Http\Controllers\ProductController::class, 'sortLowtoHight']);
-Route::get('sortProductHightToLow/{catrgoryId}', [App\Http\Controllers\ProductController::class, 'sortHightToLow']);
-
 Route::get('getCart', [App\Http\Controllers\ProductController::class, 'getCart']);
 Route::post('addToCart/{id}', [App\Http\Controllers\ProductController::class, 'addToCart']);
 
 Route::get('getCategories', [App\Http\Controllers\CategoryController::class, 'getCategories']);
+
+Route::post('createOrder', [App\Http\Controllers\OrderController::class, 'create']);

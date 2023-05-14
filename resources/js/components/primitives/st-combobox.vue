@@ -92,7 +92,7 @@ export default {
     }
 
     &__result-item:hover {
-        background-color: $--st-input-bg;
+        background-color: $--st-hover;
     }
 
     &__popup-triangle-icon {
@@ -102,7 +102,7 @@ export default {
 }
 
 .--selected {
-    background-color: $--st-input-bg;
+    background-color: $--st-hover;
 }
 .--popup {
     transform: rotate(180deg);

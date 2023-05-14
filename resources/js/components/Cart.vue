@@ -1,9 +1,9 @@
 <template>
-    <div class="st-cart">  
-        <div v-if="cart?.length > 0" class="st-cart__content">
-            <div class="st-cart__page-header">
+    <div v-if="cart?.length > 0" class="st-cart">  
+        <div class="st-cart__page-header">
                 <st-label  value="КОРЗИНА" />
             </div>
+        <div  class="st-cart__content">
             <div  class="st-cart__grid">
                 <st-label value="Наименование товара" class="st-cart__header" />
                 <st-label value="Количество" class="st-cart__header" />
@@ -19,38 +19,33 @@
                     <st-label :value="cartItem.product.cost * cartItem.quantity" class="st-cart__grid-item" />
                 </template>
             </div>
-
             <div class="st-cart__total">
                 <st-label :value="`ВСЕГО: ${totalCost}`" />
-                <st-button value="Оформить заказ"/>
+                <st-button value="Оформить заказ" @click="isShowModal = true" />
             </div>
-
-            
         </div>
-
-        <div v-else>
+            <StOrderModal :isShow="isShowModal" @close="isShowModal = false"/>
+    </div>
+    <div v-else>
             Корзина пуста :(
         </div>
-    
-        
-    </div>
 </template>
   
 <script setup>
 import { useStore } from 'vuex';
 import addIcon from '../../../public/assets/icons/add-to-cart.svg';
 import minusIcon from '../../../public/assets/icons/minus.svg';
-import { computed } from "vue";
+import { computed, ref } from 'vue';
+import StOrderModal from '../components/primitives/st-order-modal.vue';
   
 const store = useStore();
-
 const cart = computed(() => { 
     return store.getters['cart/cart'];
 }); 
-
 const totalCost = computed(() => { 
     return cart.value.reduce((accumulator, item) => accumulator + item.product.cost * item.quantity, 0);
 }); 
+let isShowModal = ref(false);
 
 async function deleteFromCart(cartItem) {
     store.dispatch('cart/deleteFromCart', cartItem);
@@ -66,10 +61,7 @@ async function addToCart(product) {
 <style lang="scss">
 .st-cart {
     display: flex;
-    align-content: center;
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
 
     height: 100%;
 
@@ -89,6 +81,9 @@ async function addToCart(product) {
     }
 
     &__content {
+        display: flex;
+        align-items: flex-start;
+        justify-content: center;
         flex: 1;
         /*ie10*/
         -ms-flex: 1 1 auto; /*needs both shrink and grow*/
@@ -133,15 +128,16 @@ async function addToCart(product) {
 
     &__total {
         display: flex;
+        flex-direction: column;
         font-weight: 700;
         font-size: $--st-font-medium;
-        margin: $--st-offset-xl 0;
+        margin-left: 3 * $--st-offset-xl;
 
         align-content: center;
         justify-content: space-between;
 
         .st-label {
-            margin: auto 0;
+            padding-bottom: $--st-offset-xl;
         }
     }
 }

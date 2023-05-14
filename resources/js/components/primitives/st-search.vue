@@ -17,7 +17,6 @@ import searchIcon from '../../../../public/assets/icons/search-icon.svg';
 </script>
 
 <script>
-import { ref, watch, computed } from 'vue';
 import { dataservice } from '../../App.vue';
 import useDebouncedRef from '../../utils/debounce';
 
@@ -83,7 +82,7 @@ export default {
     }
 
     &__result-item:hover {
-        background-color: $--st-input-bg;
+        background-color: $--st-hover;
     }
 }
 </style>
