@@ -32,7 +32,7 @@ class ProductController extends Controller
      * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function create(Request $request)
     {
         $validate = $request->validate([
             'name' => 'required|string|max:191',
@@ -91,7 +91,6 @@ class ProductController extends Controller
     public function show(int $id)
     {
         return response()->json(Product::where('id', $id)->get());
-      
     }
 
     /**

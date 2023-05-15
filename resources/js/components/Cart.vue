@@ -26,8 +26,8 @@
         </div>
             <StOrderModal :isShow="isShowModal" @close="isShowModal = false"/>
     </div>
-    <div v-else>
-            Корзина пуста :(
+    <div class="st-cart__empty" v-else>
+            <st-label value="Корзина пуста :(" />
         </div>
 </template>
   
@@ -138,6 +138,15 @@ async function addToCart(product) {
 
         .st-label {
             padding-bottom: $--st-offset-xl;
+        }
+    }
+
+    &__empty {
+        display: flex;
+
+        .st-label {
+            font-size: $--st-font-large;
+            font-weight: 700;
         }
     }
 }

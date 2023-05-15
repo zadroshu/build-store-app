@@ -62,6 +62,10 @@ export default {
             }
         },
 
+        clearCart(state) {
+            state.cart = [];
+        },
+
         updateCartFromLocalStorage(state) {
             const cart = localStorage.getItem('cart');
             if(cart) {
@@ -82,7 +86,12 @@ export default {
         deleteFromCart({state, dispatch, commit}, cartItem) {
             commit('deleteFromCart', cartItem);
             dispatch('updateLocalStorage', state.cart);
-        }
+        },
+
+        clearCart({commit, dispatch, state}) {
+            commit('clearCart');
+            dispatch('updateLocalStorage', state.cart);
+        },
     },
     modules : {},
 };

@@ -10,12 +10,8 @@
     use HasFactory;
 
     protected $fillable = [
-      'name',
-      'category',
-      'cost',
-      'discount',
-      'description',
-      'images',
+      'email',
+      'phone',
     ];
 
     public function products()

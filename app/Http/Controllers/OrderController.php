@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Order;
+use App\Models\ProductOrder;
 use Illuminate\Http\Request;
 
 class OrderController extends Controller
@@ -17,24 +19,30 @@ class OrderController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create(Request $request)
-    {
-      dd($request->input());
-    }
-
-    /**
      * Store a newly created resource in storage.
      *
      * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function create(Request $request)
     {
-      //
+        try {
+            $order = new Order(['email' => $request->all()['email'], 'phone' => $request->all()['phone']]);
+            $order->save();
+
+            $cart = $request->all()['cart'];
+            foreach ($cart as $cartItem) {
+                $productOrderData = [];
+                $productOrderData['product_id'] = $cartItem['product']['id'];
+                $productOrderData['order_id'] = $order->id;
+                $productOrderData['quantity'] = $cartItem['quantity'];
+                $productOrder = new ProductOrder($productOrderData);
+                $productOrder->save();
+        };
+        } catch (\Throwable $th) {
+            return $th->getMessage();
+        }
+
     }
 
     /**

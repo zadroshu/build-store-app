@@ -13,6 +13,7 @@ class ProductOrder extends Model
     protected $fillable = [
         'product_id',
         'order_id',
+        'quantity',
       ];
 
 }

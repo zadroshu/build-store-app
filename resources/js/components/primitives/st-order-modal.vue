@@ -12,7 +12,7 @@
 
           <div class="modal-order__body">
             <slot name="modal-order__body">
-                <st-input v-model="client.phoneNumber" class="modal-order__input" type="phone" placeholder="Ваш номер телефона" @valid="isValidPhone = $event" />
+                <st-input v-model="client.phone" class="modal-order__input" type="phone" placeholder="Ваш номер телефона" @valid="isValidPhone = $event" />
                 <st-input v-model="client.email" class="modal-order__input" type="email" placeholder="Ваш email" @valid="isValidEmail = $event" />
             </slot>
           </div>
@@ -32,6 +32,7 @@ import { ref, computed } from 'vue';
 import { dataservice } from '../../App.vue';
 import { useStore } from 'vuex';
 
+const emit = defineEmits(['close']); 
 const store = useStore();
 const props = defineProps({
     isShow: Boolean,
@@ -41,15 +42,17 @@ let isValidEmail = ref(false);
 
 let client = {
     email: '',
-    phoneNumber: '',
+    phone: '',
 };
 async function createOrder() {
     const order = {
         email: client.email,
-        phoneNumber: client.phoneNumber,
+        phone: client.phone,
         cart: store.getters['cart/cart'],
     }
     await dataservice.order.create(order);
+    store.dispatch('cart/clearCart');
+    emit('close');
 }
 
 </script>
