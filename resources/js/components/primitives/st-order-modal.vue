@@ -24,24 +24,21 @@
           </div>
         </div>
       </div>
-      <st-modal-notification header="Заказ" :msg="resultMsg" :isShow="isShowMsgModal" />
     </div>
 </template>
 <script setup>
 import closeIcon from '../../../../public/assets/icons/close.svg';
-import { ref, computed } from 'vue';
+import { ref } from 'vue';
 import { dataservice } from '../../App.vue';
 import { useStore } from 'vuex';
 
-const emit = defineEmits(['close']); 
+const emit = defineEmits(['close', 'modalMsg']); 
 const store = useStore();
 const props = defineProps({
     isShow: Boolean,
 });
 let isValidPhone = ref(false);
 let isValidEmail = ref(false);
-let isShowMsgModal = ref(false);
-let resultMsg = ref('Заказ успешно оформлен!');
 
 let client = {
     email: '',
@@ -53,15 +50,13 @@ async function createOrder() {
         phone: client.phone,
         cart: store.getters['cart/cart'],
     }
+
     try{
         await dataservice.order.create(order);
         store.dispatch('cart/clearCart');
-        emit('close');
-        resultMsg = 'Заказ успешно оформлен!';
-    }catch(error){
-        resultMsg = 'Что то пошло не так...';
+    } catch(error) {
     }
-    
+    emit('close');
 }
 
 </script>

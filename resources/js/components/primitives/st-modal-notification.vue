@@ -5,8 +5,8 @@
 
           <div class="modal-order__header">
             <slot name="modal-order__header">
-              <st-label value="Оформление заказа" />
-              <closeIcon class="modal-order__header-icon-close" @click="$emit('close')" />
+              <st-label :value="header" />
+              <closeIcon class="modal-order__header-icon-close" @click="$emit('closeNotificationModal')" />
             </slot>
           </div>  
 
@@ -18,7 +18,7 @@
 
           <div class="modal-order__footer">
             <slot name="modal-order__footer">
-              <st-button value="Ok" @click="$emit('close')" />
+              <st-button value="Ok" @click="$emit('closeNotificationModal')" />
             </slot>
           </div>
         </div>
@@ -27,9 +27,8 @@
 </template>
 <script setup>
 import closeIcon from '../../../../public/assets/icons/close.svg';
-import { useStore } from 'vuex';
 
-const emit = defineEmits(['close']); 
+const emit = defineEmits(['closeNotificationModal']); 
 const props = defineProps({
     isShow: Boolean,
     header: String,

@@ -25,11 +25,11 @@
                     <st-button value="Оформить заказ" @click="isShowModal = true" />
                 </div>
             </div>
-                <StOrderModal :isShow="isShowModal" @close="isShowModal = false"/>
         </div>
         <div class="st-cart__empty" v-else>
             <st-label value="Корзина пуста :(" />
         </div>
+        <st-order-modal :isShow="isShowModal" @close="isShowModal = false" />
     </div>
 </template>
   
@@ -56,8 +56,6 @@ async function deleteFromCart(cartItem) {
 async function addToCart(product) {
     store.dispatch('cart/addToCart', product);
 }
-
-
 </script>
   
 <style lang="scss">
