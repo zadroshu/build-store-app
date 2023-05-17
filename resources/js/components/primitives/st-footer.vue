@@ -1,6 +1,6 @@
 <template>
     <div class="st-app__footer">
-        footer
+  
     </div>
   </template>
   

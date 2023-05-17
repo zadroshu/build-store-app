@@ -83,7 +83,7 @@ function isValidPhone(pattern) {
       background-color: transparent;
       padding: $--st-offset-xs;
 
-      border-bottom: .2rem solid $--st-black;
+      border-bottom: 1px solid $--st-black;
     }
 
     input:focus {

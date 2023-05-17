@@ -20,6 +20,22 @@ $--st-hover: rgba(239, 239, 239, .6);
 
 $--st-font-small: 1.2rem;
 $--st-font-medium: 1.4rem;
+$--st-font-big: 2rem;
 $--st-font-large: 2.8rem;
+
+@mixin breakpoint($point) {
+    @if $point == lg {
+        @media(max-width: 992px){@content;}
+    }
+    @else if $point == md {
+        @media(max-width: 768px){@content;}
+    }
+    @else if $point == sm {
+        @media(max-width: 576px){@content;}
+    }
+    @else if $point == xs {
+        @media(max-width: 380px){@content;}
+    }
+}
 
 

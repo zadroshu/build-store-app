@@ -74,6 +74,7 @@ export default {
         background-color: #fff;
         margin-top: $--st-offset-xs;
         overflow: auto;
+        z-index: 888;
     }
 
     &__result-item {

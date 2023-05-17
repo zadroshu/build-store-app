@@ -1,9 +1,9 @@
 <template>
     <div class="st-index">
         <div class="st-index__toolbar">
+            <st-search />
             <st-combobox :values="categoryComboboxData" @select="sortProductsByCategory" />
             <st-combobox :values="sortComboboxData" :defaultValue="defailtCostValue" @select="sortProductsByCost" />
-            <st-search />
         </div>
         <st-load v-if="isLoading" />
         <div class="st-index__content" v-else>
@@ -109,12 +109,18 @@
   .st-index {
     height: 100%;
     &__toolbar {
-      display: flex;
-      justify-content: space-between;
-      margin: 0 $--st-offset-xxl;
+        display: flex;
+        justify-content: space-between;
+        margin: 0 $--st-offset-xxl;
+
+        @include breakpoint(md) {
+           flex-direction: column;
+           max-width: max-content;
+           margin: 0 auto;
+        }
     }
     &__multiselect {
-      max-width: 30%;
+        max-width: 30%;
     }
     &__content {
         height: 100%;

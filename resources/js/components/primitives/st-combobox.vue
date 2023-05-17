@@ -59,12 +59,13 @@ export default {
     &__toolbar {
         min-width: 15rem;
         display: flex;
+        justify-content: space-between;
         align-items: center;
 
         background-color: transparent;
         padding: 0 $--st-offset-xs;
 
-        border-bottom: .2rem solid $--st-black;
+        border-bottom: 1px solid $--st-black;
     }
 
     &__popup {

@@ -14,7 +14,15 @@
     </div>
 
     <st-label :value="product.name" color='white'/>
-    <st-label :value="product.cost"/>
+    <div v-if="product?.discount > 0" class="st-product-card__with-discount"> 
+      <st-label :value="product.cost - product.discount" class="st-product-card__new-cost" />
+      <st-label :value="product.cost" class="st-product-card__old-cost"/>
+      <rubleIcon />
+    </div>
+    <div v-else>
+      <st-label :value="product.cost" class="st-product-card__new-cost" />
+      <rubleIcon />
+    </div>
   </div>
 </template>
 
@@ -22,6 +30,7 @@
 import StLabel from "./st-label.vue";
 import {ref} from "vue";
 import addToCartIcon from '../../../../public/assets/icons/add-to-cart.svg';
+import rubleIcon from '../../../../public/assets/icons/ruble.svg';
 import { useRouter } from 'vue-router';
 import { useStore } from 'vuex';
 
@@ -68,6 +77,19 @@ function goToProduct(item) {
     top: 0;
 
     padding: $--st-offset-xs;
+  }
+
+  &__with-discount {
+    display: flex;
+    align-items: center;
+  }
+
+  &__new-cost {
+    font-weight: 700;
+  }
+
+  &__old-cost {
+    text-decoration: line-through;
   }
 }
 

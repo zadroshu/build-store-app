@@ -18,8 +18,18 @@ const props = defineProps({
   grid-template-columns: repeat(3, auto);
   justify-items: center;
   justify-content: center;
-  gap: 7rem 5rem;
+  gap: 7rem $--st-offset-xxl;
 
   padding: 3rem;
+
+  @include breakpoint(lg) {
+    grid-template-columns: repeat(2, auto);
+    gap: $--st-offset-xxl $--st-offset-xxl;
+  }
+
+  @include breakpoint(sm) {
+    grid-template-columns: auto;
+    gap: $--st-offset-xl;
+  }
 }
 </style>

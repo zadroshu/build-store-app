@@ -15,7 +15,6 @@ export default {
   props: {
     links: Array,
   },
-
   emits: ['changePage'],
 
   methods: {
@@ -23,6 +22,10 @@ export default {
       this.$emit('changePage', toRaw(link));
     },
   },
+
+  mounted() {
+    console.log();
+  }
 }
 </script>
 
@@ -48,7 +51,8 @@ export default {
   border-radius: 0.5rem;
   cursor: pointer;
 
-  padding: 1rem 2rem;
+  padding: $--st-offset-m $--st-offset-xl;
+  margin-bottom: $--st-offset-xs;
   background-color: $--st-white;
 }
 

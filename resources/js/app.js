@@ -11,6 +11,7 @@ import StInput from './components/primitives/st-input.vue';
 import StLabel from './components/primitives/st-label.vue';
 import StLoad from './components/primitives/st-load.vue';
 import StCombobox from './components/primitives/st-combobox.vue';
+import StModalNotification from './components/primitives/st-modal-notification.vue';
 
 window.apiUrl = 'http://localhost';
 
@@ -22,6 +23,7 @@ app
     .component('StInput', StInput)
     .component('StLabel', StLabel)
     .component('StCombobox', StCombobox)
+    .component('StModalNotification', StModalNotification)
     .component('StLoad', StLoad);
 
 app

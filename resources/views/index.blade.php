@@ -13,7 +13,6 @@
     </head>
     <body class="antialiased">
         <div id="app"></div>
-           {{-- <app-component></app-component> --}}
         @vite('resources/js/app.js')
     </body>
 </html>

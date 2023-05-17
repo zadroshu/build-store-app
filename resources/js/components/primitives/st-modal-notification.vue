@@ -12,57 +12,29 @@
 
           <div class="modal-order__body">
             <slot name="modal-order__body">
-                <st-input v-model="client.phone" class="modal-order__input" type="phone" placeholder="Ваш номер телефона" @valid="isValidPhone = $event" />
-                <st-input v-model="client.email" class="modal-order__input" type="email" placeholder="Ваш email" @valid="isValidEmail = $event" />
+                <st-label :value="msg" />
             </slot>
           </div>
 
           <div class="modal-order__footer">
             <slot name="modal-order__footer">
-              <st-button :disabled="!isValidPhone || !isValidEmail" value="Оформить" @click="createOrder" />
+              <st-button value="Ok" @click="$emit('close')" />
             </slot>
           </div>
         </div>
       </div>
-      <st-modal-notification header="Заказ" :msg="resultMsg" :isShow="isShowMsgModal" />
     </div>
 </template>
 <script setup>
 import closeIcon from '../../../../public/assets/icons/close.svg';
-import { ref, computed } from 'vue';
-import { dataservice } from '../../App.vue';
 import { useStore } from 'vuex';
 
 const emit = defineEmits(['close']); 
-const store = useStore();
 const props = defineProps({
     isShow: Boolean,
+    header: String,
+    msg: String,
 });
-let isValidPhone = ref(false);
-let isValidEmail = ref(false);
-let isShowMsgModal = ref(false);
-let resultMsg = ref('Заказ успешно оформлен!');
-
-let client = {
-    email: '',
-    phone: '',
-};
-async function createOrder() {
-    const order = {
-        email: client.email,
-        phone: client.phone,
-        cart: store.getters['cart/cart'],
-    }
-    try{
-        await dataservice.order.create(order);
-        store.dispatch('cart/clearCart');
-        emit('close');
-        resultMsg = 'Заказ успешно оформлен!';
-    }catch(error){
-        resultMsg = 'Что то пошло не так...';
-    }
-    
-}
 
 </script>
 <style lang="scss">
