@@ -11,7 +11,12 @@
             </div>  
 
             <div class="st-product-modal__body">
-                <st-input placeholder="Name" />
+                <st-input v-model="product.name" placeholder="Name" type="text" />
+                <st-combobox v-model="product.category_id" :values="categoryComboboxData" />
+                <st-input v-model="product.cost" placeholder="Cost" type="number" />
+                <st-input v-model="product.description" placeholder="Description" type="text" />
+                <st-input v-model="product.image" placeholder="Image" type="text" />
+                <st-input v-model="product.in_stock" placeholder="In_stock" type="number" />
             </div>
 
             <div class="st-product-modal__footer">
@@ -26,15 +31,17 @@
 </template>
 <script setup>
 import closeIcon from '../../../../../public/assets/icons/close.svg';
+import { onMounted } from 'vue';
 
 const emit = defineEmits(['confirmationYes', 'confirmationNo']); 
 const props = defineProps({
     isShow: Boolean,
-    header: 'Товар',
+    header: String,
     item: Object | undefined,
+    categories: Array,
 });
 
-const product = item ?? {
+let product = props.item ?? {
     name: '',
     category_id: -1,
     cost: 0,
@@ -42,6 +49,10 @@ const product = item ?? {
     image: '',
     in_stock: 0,
 };
+
+let categoryComboboxData = props.categories.map((item) => { return { id: item.id, displayName: item.name }});
+
+console.log(categoryComboboxData);
 
 </script>
 <style lang="scss">
@@ -104,6 +115,7 @@ const product = item ?? {
         flex-direction: column;
         flex: 1;
         margin: 20px 0;
+        width: min-content;
     }
 
     &__footer {

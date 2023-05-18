@@ -1,8 +1,17 @@
 <template>
     <st-load v-if="isLoading" />
     <div v-else class="st-admin-home">
-        <st-tabel :heroes="products.data" :columns="columns" :options="{ edit: true, delete: true }" @edit="editItem" @delete="deleteItem" />
+        <st-tabel :heroes="products.data" :columns="columns" :options="{ edit: true, delete: true }" @edit="isShowEditModal = true, confirmationItem = $event" @delete="deleteItem" />
         <st-pagination :links="products.links" @change-page="changePage" />
+        <st-product-modal 
+            :isShow="isShowEditModal" 
+            header="Товар" 
+            :item="confirmationItem" 
+            :categories="categories"
+            @confirmationYes="editItem" 
+            @confirmationNo="isShowEditModal = false" 
+            @close="isShowEditModal = false" 
+        />
         
     </div>
 </template>
@@ -21,8 +30,8 @@ export default {
             }),
             columns: ['name', 'category_id', 'cost', 'discount', 'description', 'images', 'in_stock'],
             isShowEditModal: false,
-            isShowDeleteModal: false,
             categories: [],
+            confirmationItem: {},
         }
     },
 
@@ -60,6 +69,7 @@ export default {
 
         async editItem(item) {
             console.log(item);
+            this.isShowEditModal = false;
         },
 
         async deleteItem(item) {

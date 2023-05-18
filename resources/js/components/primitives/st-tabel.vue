@@ -23,7 +23,7 @@
                 <st-label :value="entry[key]" />
                 </td>
                 <td v-if="options?.edit">
-                    <div class="st-tabel__icon-wrapper"><editIcon @click="confirmationItem = entry, isShowEditModal = true" /></div>
+                    <div class="st-tabel__icon-wrapper"><editIcon @click="$emit('edit', entry)" /></div>
                 </td>
                 <td v-if="options?.delete">
                     <div class="st-tabel__icon-wrapper"><deleteIcon @click="confirmationItem = entry, isShowDeleteModal = true" /></div>
@@ -31,15 +31,22 @@
             </tr>
             </tbody>
         </table>
-        <st-product-modal :isShow="isShowEditModal" :item="confirmationItem" header="Изменение" msg="Вы действительно хотите удалить товар?" @confirmationYes="$emit('delete', $event),  isShowEditModal = false" @confirmationNo="isShowEditModal = false" @close="isShowEditModal = false" />
-        <st-confirmation-modal :isShow="isShowDeleteModal" :item="confirmationItem" header="Удаление" msg="Вы действительно хотите удалить товар?" @confirmationYes="$emit('delete', $event), isShowDeleteModal = false" @confirmationNo="isShowDeleteModal = false" @close="isShowDeleteModal = false" />
+        <st-confirmation-modal 
+            :isShow="isShowDeleteModal" 
+            :item="confirmationItem" 
+            header="Удаление" 
+            msg="Вы действительно хотите удалить товар?" 
+            @confirmationYes="$emit('delete', $event), isShowDeleteModal = false" 
+            @confirmationNo="isShowDeleteModal = false" 
+            @close="isShowDeleteModal = false" 
+        />
     </div>
 </template>
 
 <script setup>
 import editIcon from '../../../../public/assets/icons/edit.svg';
 import deleteIcon from '../../../../public/assets/icons/delete-icon.svg';
-import { ref, computed, onMounted } from 'vue';
+import { ref } from 'vue';
 
 const props = defineProps({
     heroes: Array,
@@ -50,7 +57,6 @@ const props = defineProps({
     },
 });
 
-let isShowEditModal = ref(false);
 let isShowDeleteModal = ref(false);
 let filterKey = 1;
 
@@ -59,30 +65,17 @@ let confirmationItem = ref({});
 function capitalize(str) {
     return str.charAt(0).toUpperCase() + str.slice(1);
 };
-
-function showDeleteConfirmation(event) {
-    confirmationItem = event;
-    isShowDeleteModal = true;
-    console.log(isShowDeleteModal);
-};
-
-function showEditConfirmation(event) {
-    console.log(event);
-}
-
 </script>
 
 
 <style lang="scss">
 .st-tabel {
-    // border: 2px solid $--st-gray;
     border-radius: 3px;
     background-color: #fff;
     margin: $--st-offset-l;
 
     th {
         background-color: $--st-blue;
-        // color: rgba(255, 255, 255, 0.66);
         cursor: pointer;
         -webkit-user-select: none;
         -moz-user-select: none;
@@ -110,10 +103,6 @@ function showEditConfirmation(event) {
 
 
 th,
-// td {
-// //   min-width: 120px;
-// }
-
 th.active {
   color: #fff;
 }

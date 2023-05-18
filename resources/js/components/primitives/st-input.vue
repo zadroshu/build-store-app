@@ -8,7 +8,7 @@
             @input="$emit('update:modelValue', $event.target.value)"
         >
       </div>
-      <div v-if="props.type === 'phone'" class="st-input__input">
+      <div v-else-if="props.type === 'phone'" class="st-input__input">
         <input v-model="value" type="string" 
             pattern="/^(\+7|7|8)?[\s\-]?\(?[489][0-9]{2}\)?[\s\-]?[0-9]{3}[\s\-]?[0-9]{2}[\s\-]?[0-9]{2}$/"
             :class="{unvalid: !isValidPhone(new RegExp(/^(\+7|7|8)?[\s\-]?\(?[489][0-9]{2}\)?[\s\-]?[0-9]{3}[\s\-]?[0-9]{2}[\s\-]?[0-9]{2}$/))}"
