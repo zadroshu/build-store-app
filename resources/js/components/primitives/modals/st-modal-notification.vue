@@ -5,21 +5,20 @@
 
           <div class="modal-order__header">
             <slot name="modal-order__header">
-              <st-label value="Оформление заказа" />
-              <closeIcon class="modal-order__header-icon-close" @click="$emit('close')" />
+              <st-label :value="header" />
+              <closeIcon class="modal-order__header-icon-close" @click="$emit('closeNotificationModal')" />
             </slot>
           </div>  
 
           <div class="modal-order__body">
             <slot name="modal-order__body">
-                <st-input v-model="client.phone" class="modal-order__input" type="phone" placeholder="Ваш номер телефона" @valid="isValidPhone = $event" />
-                <st-input v-model="client.email" class="modal-order__input" type="email" placeholder="Ваш email" @valid="isValidEmail = $event" />
+                <st-label :value="msg" />
             </slot>
           </div>
 
           <div class="modal-order__footer">
             <slot name="modal-order__footer">
-              <st-button :disabled="!isValidPhone || !isValidEmail" value="Оформить" @click="createOrder" />
+              <st-button value="Ok" @click="$emit('closeNotificationModal')" />
             </slot>
           </div>
         </div>
@@ -27,37 +26,14 @@
     </div>
 </template>
 <script setup>
-import closeIcon from '../../../../public/assets/icons/close.svg';
-import { ref } from 'vue';
-import { dataservice } from '../../App.vue';
-import { useStore } from 'vuex';
+import closeIcon from '../../../../../public/assets/icons/close.svg';
 
-const emit = defineEmits(['close', 'modalMsg']); 
-const store = useStore();
+const emit = defineEmits(['closeNotificationModal']); 
 const props = defineProps({
     isShow: Boolean,
+    header: String,
+    msg: String,
 });
-let isValidPhone = ref(false);
-let isValidEmail = ref(false);
-
-let client = {
-    email: '',
-    phone: '',
-};
-async function createOrder() {
-    const order = {
-        email: client.email,
-        phone: client.phone,
-        cart: store.getters['cart/cart'],
-    }
-
-    try{
-        await dataservice.order.create(order);
-        store.dispatch('cart/clearCart');
-    } catch(error) {
-    }
-    emit('close');
-}
 
 </script>
 <style lang="scss">

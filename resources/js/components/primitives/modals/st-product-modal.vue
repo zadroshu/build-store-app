@@ -1,24 +1,23 @@
 <template>
-    <div v-if="isShow" class="modal-order">
-      <div class="modal-order__wrapper">
-        <div class="modal-order__container">
+    <div v-if="isShow" class="st-product-modal">
+      <div class="st-product-modal__wrapper">
+        <div class="st-product-modal__container">
 
-          <div class="modal-order__header">
-            <slot name="modal-order__header">
-              <st-label :value="header" />
-              <closeIcon class="modal-order__header-icon-close" @click="$emit('closeNotificationModal')" />
-            </slot>
-          </div>  
+            <div class="st-product-modal__header">
+                <slot name="st-product-modal__header">
+                <st-label :value="header" />
+                <closeIcon class="st-product-modal__header-icon-close" @click="$emit('close')" />
+                </slot>
+            </div>  
 
-          <div class="modal-order__body">
-            <slot name="modal-order__body">
-                <st-label :value="msg" />
-            </slot>
-          </div>
+            <div class="st-product-modal__body">
+                <st-input placeholder="Name" />
+            </div>
 
-          <div class="modal-order__footer">
-            <slot name="modal-order__footer">
-              <st-button value="Ok" @click="$emit('closeNotificationModal')" />
+            <div class="st-product-modal__footer">
+            <slot name="st-product-modal__footer">
+                <st-button class="st-product-modal__footer-btn" value="Нет" @click="$emit('confirmationNo', item)" />
+                <st-button class="st-product-modal__footer-btn" value="Да" @click="$emit('confirmationYes', item)" />
             </slot>
           </div>
         </div>
@@ -26,18 +25,27 @@
     </div>
 </template>
 <script setup>
-import closeIcon from '../../../../public/assets/icons/close.svg';
+import closeIcon from '../../../../../public/assets/icons/close.svg';
 
-const emit = defineEmits(['closeNotificationModal']); 
+const emit = defineEmits(['confirmationYes', 'confirmationNo']); 
 const props = defineProps({
     isShow: Boolean,
-    header: String,
-    msg: String,
+    header: 'Товар',
+    item: Object | undefined,
 });
+
+const product = item ?? {
+    name: '',
+    category_id: -1,
+    cost: 0,
+    description: '',
+    image: '',
+    in_stock: 0,
+};
 
 </script>
 <style lang="scss">
-.modal-order {
+.st-product-modal {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -101,6 +109,10 @@ const props = defineProps({
     &__footer {
         display: flex;
         flex-direction: row-reverse;
+    }
+
+    &__footer-btn {
+        margin-right: $--st-offset-xs;
     }
 
     &__default-button {

@@ -11,7 +11,11 @@ import StInput from './components/primitives/st-input.vue';
 import StLabel from './components/primitives/st-label.vue';
 import StLoad from './components/primitives/st-load.vue';
 import StCombobox from './components/primitives/st-combobox.vue';
-import StModalNotification from './components/primitives/st-modal-notification.vue';
+import StModalNotification from './components/primitives/modals/st-modal-notification.vue';
+import StPagination from './components/primitives/st-pagination.vue';
+import StTabel from './components/primitives/st-tabel.vue';
+import StConfirmationModal from './components/primitives/modals/st-confirmation-modal.vue';
+import StProductModal from './components/primitives/modals/st-product-modal.vue';
 
 window.apiUrl = 'http://localhost';
 
@@ -24,6 +28,10 @@ app
     .component('StLabel', StLabel)
     .component('StCombobox', StCombobox)
     .component('StModalNotification', StModalNotification)
+    .component('StPagination', StPagination)
+    .component('StTabel', StTabel)
+    .component('StConfirmationModal', StConfirmationModal)
+    .component('StProductModal', StProductModal)
     .component('StLoad', StLoad);
 
 app

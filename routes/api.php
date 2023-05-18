@@ -25,6 +25,7 @@ Route::get('getProduct/{id}', [App\Http\Controllers\ProductController::class, 's
 Route::get('getProductByName/{name}', [App\Http\Controllers\ProductController::class, 'searchByName']);
 Route::get('searchByCategory/{id}', [App\Http\Controllers\ProductController::class, 'searchByCategory']);
 Route::get('sortProducts/{categoryId}/{sortId}', [App\Http\Controllers\ProductController::class, 'sort']);
+Route::post('deleteProduct/{id}', [App\Http\Controllers\ProductController::class, 'delete']);
 
 
 Route::get('getCart', [App\Http\Controllers\ProductController::class, 'getCart']);

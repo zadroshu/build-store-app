@@ -53,7 +53,7 @@ class ProductController extends Controller
      *
      * @param \Illuminate\Http\Request $request
      * @param int $id
-     * @return \Illuminate\Http\Response
+     * @return json
      */
     public function update(Request $request, Product $product)
     {
@@ -74,12 +74,12 @@ class ProductController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param \App\Models\Product $product
-     * @return \Illuminate\Http\Response
+     * @param int $id
+     * @return json
      */
-    public function destroy(Product $product)
+    public function delete(int $id)
     {
-      //
+      return response()->json(Product::find($id)->delete());
     }
 
     /**
@@ -159,7 +159,6 @@ class ProductController extends Controller
     public function searchByName($substring)
     {
         return response()->json(Product::where('name', 'LIKE', '%'.$substring.'%')->get());
-
     }
 
     /**
@@ -171,7 +170,6 @@ class ProductController extends Controller
     public function searchByCategory($categoryId)
     {
         return response()->json(Product::where('category_id', $categoryId)->paginate(12));
-        
     }
 
     /**
@@ -184,11 +182,8 @@ class ProductController extends Controller
 
     public function sort(int $categoryId, int $sortId)
     {   
-
-        // dump($isCategory);
         $products = DB::table('products')
             ->when($categoryId, function(Builder $query, int $categoryId) {
-                // dump($categoryId);
                 if ($categoryId != -1) {
                     return $query->where('category_id', $categoryId);;
                 }

@@ -5,7 +5,7 @@
   use Illuminate\Database\Eloquent\Factories\Factory;
 
   /**
-   * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Good>
+   * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Product>
    */
   class ProductFactory extends Factory
   {
@@ -22,7 +22,7 @@
         'cost' => $this->faker->numberBetween(500, 11301),
         'discount' => $this->faker->numberBetween(0, 1000),
         'description' => $this->faker->text(150),
-        'images' => $this->faker->url(),
+        'image' => $this->faker->url(),
         'in_stock' => $this->faker->numberBetween(0, 1000),
       ];
     }

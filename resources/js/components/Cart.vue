@@ -38,7 +38,7 @@ import { useStore } from 'vuex';
 import addIcon from '../../../public/assets/icons/add-to-cart.svg';
 import minusIcon from '../../../public/assets/icons/minus.svg';
 import { computed, ref } from 'vue';
-import StOrderModal from '../components/primitives/st-order-modal.vue';
+import StOrderModal from './primitives/modals/st-order-modal.vue';
   
 const store = useStore();
 const cart = computed(() => { 

@@ -49,7 +49,7 @@
     methods: {
         async getData() {
             this.isLoading = true;
-            const response = dataservice.products.get();
+            const response = await dataservice.products.get();
             this.isLoading = false;
 
             return response;

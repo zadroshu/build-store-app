@@ -28,6 +28,9 @@ export default class Dataservice {
             async get(id) {
                 return await axios.get(`${window.apiUrl}/api/getProduct/${id}`);
             },
+            async delete(id) {
+                return await axios.post(`${window.apiUrl}/api/deleteProduct/${id}`);
+            },
 
         },
         categories: {
