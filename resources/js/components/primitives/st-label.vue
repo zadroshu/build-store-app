@@ -15,7 +15,6 @@ const props = defineProps({
 
 <style scoped lang="scss">
   .st-label {
-    // height: 1.4rem;
     margin: $--st-offset-xs $--st-offset-m;
     
   }

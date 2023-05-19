@@ -6,8 +6,6 @@
                 <th v-for="key in columns"
                 @click="$emit('sort', key)">
                     <st-label :value="capitalize(key)" />
-                <!-- <span class="arrow" :class="sortOrders[key] > 0 ? 'asc' : 'dsc'">
-                </span> -->
                 </th>
                 <th v-if="options?.edit">
                     <st-label value="Изменить" />
@@ -35,7 +33,7 @@
             :isShow="isShowDeleteModal" 
             :item="confirmationItem" 
             header="Удаление" 
-            msg="Вы действительно хотите удалить товар?" 
+            msg="Вы действительно хотите удалить элемент?" 
             @confirmationYes="$emit('delete', $event), isShowDeleteModal = false" 
             @confirmationNo="isShowDeleteModal = false" 
             @close="isShowDeleteModal = false" 

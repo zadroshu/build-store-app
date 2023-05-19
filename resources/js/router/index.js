@@ -3,6 +3,7 @@ import Home from '../components/Home.vue';
 import ProductPage from '../components/ProductPage.vue';
 import Cart from '../components/Cart.vue';
 import AdminHome from '../components/AdminHome.vue';
+import AdminCategory from '../components/AdminCategory.vue';
 
 export const routes = [
     {
@@ -25,6 +26,11 @@ export const routes = [
         name: 'admin',
         path: '/admin',
         component: AdminHome,
+    },
+    {
+        name: 'adminCategory',
+        path: '/admin/category',
+        component: AdminCategory,
     },
 ];
 

@@ -31,6 +31,12 @@ export default class Dataservice {
             async delete(id) {
                 return await axios.post(`${window.apiUrl}/api/deleteProduct/${id}`);
             },
+            async update(product) {
+                return await axios.post(`${window.apiUrl}/api/updateProduct`, product);
+            },
+            async create(product) {
+                return await axios.post(`${window.apiUrl}/api/createProduct`, product);
+            }
 
         },
         categories: {
@@ -41,6 +47,15 @@ export default class Dataservice {
         category: {
             async get(id) {
                 return await axios.get(`${window.apiUrl}/api/getCategory/${id}`);
+            },
+            async create(category) {
+                return await axios.post(`${window.apiUrl}/api/createCategory`, category);
+            },
+            async update(category) {
+                return await axios.post(`${window.apiUrl}/api/updateCategory`, category);
+            },
+            async delete(id) {
+                return await axios.post(`${window.apiUrl}/api/deleteCategory/${id}`);
             },
         },
         order: {

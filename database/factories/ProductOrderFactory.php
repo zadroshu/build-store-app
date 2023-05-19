@@ -19,6 +19,7 @@ class ProductOrderFactory extends Factory
         return [
             'product_id' => $this->faker->numberBetween(1, 50),
             'order_id' => $this->faker->numberBetween(1, 5),
+            'quantity' => $this->faker->numberBetween(1, 10),
         ];
     }
 }

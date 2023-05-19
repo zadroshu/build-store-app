@@ -34,33 +34,35 @@ class ProductController extends Controller
      */
     public function create(Request $request)
     {
-        $validate = $request->validate([
+        // dd($request->all());
+        $validated = $request->validate([
             'name' => 'required|string|max:191',
-            'category' => 'required|int',
+            'category_id' => 'required|int',
             'cost' => 'required|int',
             'discount' => 'required|int',
             'description' => 'required|string|max:1000',
             'image' => 'nullable|string|max:255',
             'in_stock' => 'required|int',
         ]);
+        $validated['image'] = $validated['image'] ?? '../../../publik';
+        $product = new Product($validated);
+        $response = $product->save();
 
-        $product = new Product($validate);
-        $product->save();
+        return response()->json($response);
     }
 
     /**
-     * Update the specified resource in storage.
+     * Save the specified resource in storage.
      *
      * @param \Illuminate\Http\Request $request
-     * @param int $id
      * @return json
      */
-    public function update(Request $request, Product $product)
+    public function update(Request $request)
     {
-
         $validated = $request->validate([
+            'id' => 'required|int',
             'name' => 'required|string|max:191',
-            'category' => 'required|int',
+            'category_id' => 'required|int',
             'cost' => 'required|int',
             'discount' => 'required|int',
             'description' => 'required|string|max:1000',
@@ -68,7 +70,9 @@ class ProductController extends Controller
             'in_stock' => 'required|int',
         ]);
 
-        $product->update($validated);
+        $response = Product::where('id', $validated['id'])->update($validated);
+
+        return response()->json($response);
     }
 
     /**
@@ -91,63 +95,6 @@ class ProductController extends Controller
     public function show(int $id)
     {
         return response()->json(Product::where('id', $id)->get());
-    }
-
-    /**
-     * Update cart product by id.
-     *
-     * @param int $id
-     * @return json
-     */
-    public function updateCart(Request $request)
-    {
-    //  
-    }
-
-    public function deleteProduct(int $id)
-    {
-    //    
-    }
-
-    /**
-     * Add to cart product by id.
-     *
-     * @param int $id
-     * @return json
-     */
-    public function addToCart(Request $request, int $id)
-    {
-        $cart = $this->session->get('cart', []);
-        $product = Product::find($id);
-
-        if(isset($cart[$id])) {
-            $cart[$id]['quantity']++;
-        } else {
-            $cart[$id] = [
-                "id" => $product->id,
-                "name" => $product->name,
-                "quantity" => 1,
-                "cost" => $product->cost,
-            ];
-        }
-        $this->session->set('cart', $cart);
-        return response()->json($cart);
-    }
-
-    /**
-     * Returns cart.
-     *
-     * @return json
-     */
-    public function getCart(Request $request)
-    {
-        $cart = $this->session->get('cart', []);
-        return response()->json($cart);
-    }
-
-    public function deleteFromCart(Request $request, $id)
-    {
-        // 
     }
 
     /**

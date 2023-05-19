@@ -1,18 +1,32 @@
 <template>
-    <st-load v-if="isLoading" />
-    <div v-else class="st-admin-home">
-        <st-tabel :heroes="products.data" :columns="columns" :options="{ edit: true, delete: true }" @edit="isShowEditModal = true, confirmationItem = $event" @delete="deleteItem" />
-        <st-pagination :links="products.links" @change-page="changePage" />
-        <st-product-modal 
-            :isShow="isShowEditModal" 
-            header="Товар" 
-            :item="confirmationItem" 
-            :categories="categories"
-            @confirmationYes="editItem" 
-            @confirmationNo="isShowEditModal = false" 
-            @close="isShowEditModal = false" 
-        />
-        
+    <div class="st-admin-home">
+        <st-admin-header />
+        <div class="st-admin-home__toolbar">
+            <st-button value="Новый товар" @click="createItemModal" />
+        </div>
+        <st-load v-if="isLoading" />
+        <div v-else >
+            <st-tabel :heroes="tabeldata" :columns="columns" :options="{ edit: true, delete: true }" @edit="isShowEditModal = true, confirmationItem = $event" @delete="deleteItem" />
+            <st-pagination :links="products.links" @change-page="changePage" />
+            <st-product-update-modal 
+                :isShow="isShowEditModal" 
+                header="Товар" 
+                :item="confirmationItem" 
+                :categories="categories"
+                @updateProduct="updateItem" 
+                @closeUpdateProduct="isShowEditModal = false" 
+                @close="isShowEditModal = false" 
+            />
+            <st-product-create-modal 
+                :isShow="isShowCreateModal" 
+                header="Товар" 
+                :item="confirmationItem" 
+                :categories="categories"
+                @createProduct="createItem" 
+                @closeCreateProduct="isShowCreateModal = false" 
+                @close="isShowCreateModal = false" 
+            />   
+        </div>
     </div>
 </template>
 
@@ -28,10 +42,21 @@ export default {
                 data: [],
                 links: [],
             }),
-            columns: ['name', 'category_id', 'cost', 'discount', 'description', 'images', 'in_stock'],
+            columns: ['name', 'category_id', 'cost', 'discount', 'description', 'image', 'in_stock'],
             isShowEditModal: false,
+            isShowCreateModal: false,
             categories: [],
-            confirmationItem: {},
+            tabeldata: [],
+            confirmationItem: {
+                id: -1,
+                name: '',
+                category_id: -1,
+                cost: 0,
+                discount: 0,
+                description: '',
+                image: '',
+                in_stock: 0,
+            },
         }
     },
 
@@ -53,7 +78,8 @@ export default {
 
         setData(response) {
             this.products.data = response.data.data;
-            this.products.data.forEach(item => {
+            this.tabeldata = response.data.data;
+            this.tabeldata.forEach(item => {
                 item.category_id = toRaw(this.categories.find(category => category.id === item.category_id))?.name ?? item.category_id;
             });
 
@@ -67,9 +93,38 @@ export default {
             this.isLoading = false;
         },
 
-        async editItem(item) {
-            console.log(item);
+        async updateItem(item) {
+            if (!Number.isInteger(item.category_id)) {
+                item.category_id = this.categories.find(category => category.name === item.category_id).id;
+            }
+            await dataservice.product.update(item);
             this.isShowEditModal = false;
+            const dataResponse = toRaw(await this.getData());
+            this.setData(dataResponse);
+        },
+
+        createItemModal() {
+            this.confirmationItem = {
+                name: '',
+                category_id: -1,
+                cost: 0,
+                discount: 0,
+                description: '',
+                image: '',
+                in_stock: 0,
+            },
+            this.isShowCreateModal = true;
+        },
+
+        async createItem(item) {
+            console.log(item);
+            if (!Number.isInteger(item.category_id)) {
+                item.category_id = this.categories.find(category => category.name === item.category_id).id;
+            }
+            await dataservice.product.create(item);
+            this.isShowCreateModal = false;
+            const dataResponse = toRaw(await this.getData());
+            this.setData(dataResponse);
         },
 
         async deleteItem(item) {
@@ -90,5 +145,11 @@ export default {
 <style lang="scss">
 .st-admin-home {
     margin: $--st-offset-l;
+
+    &__toolbar {
+        margin: $--st-offset-l;
+        display: flex;
+        flex-direction: row-reverse;
+    }
 }
 </style>

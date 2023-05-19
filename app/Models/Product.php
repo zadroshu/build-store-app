@@ -11,11 +11,12 @@
 
     protected $fillable = [
       'name',
-      'category',
+      'category_id',
       'cost',
       'discount',
       'description',
       'image',
+      'in_stock',
     ];
 
     public function orders()

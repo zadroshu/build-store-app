@@ -1,28 +1,23 @@
 <template>
-    <div v-if="isShow" class="st-product-modal">
-      <div class="st-product-modal__wrapper">
-        <div class="st-product-modal__container">
+    <div v-if="isShow" class="st-category-modal">
+      <div class="st-category-modal__wrapper">
+        <div class="st-category-modal__container">
 
-            <div class="st-product-modal__header">
-                <slot name="st-product-modal__header">
+            <div class="st-category-modal__header">
+                <slot name="st-category-modal__header">
                 <st-label :value="header" />
-                <closeIcon class="st-product-modal__header-icon-close" @click="$emit('close')" />
+                <closeIcon class="st-category-modal__header-icon-close" @click="$emit('close')" />
                 </slot>
             </div>  
 
-            <div class="st-product-modal__body">
-                <st-input v-model="product.name" placeholder="Name" type="text" />
-                <st-combobox v-model="product.category_id" :values="categoryComboboxData" />
-                <st-input v-model="product.cost" placeholder="Cost" type="number" />
-                <st-input v-model="product.description" placeholder="Description" type="text" />
-                <st-input v-model="product.image" placeholder="Image" type="text" />
-                <st-input v-model="product.in_stock" placeholder="In_stock" type="number" />
+            <div class="st-category-modal__body">
+                <st-input v-model="props.item.name" placeholder="Name" type="text" />
             </div>
 
-            <div class="st-product-modal__footer">
-            <slot name="st-product-modal__footer">
-                <st-button class="st-product-modal__footer-btn" value="Нет" @click="$emit('confirmationNo', item)" />
-                <st-button class="st-product-modal__footer-btn" value="Да" @click="$emit('confirmationYes', item)" />
+            <div class="st-category-modal__footer">
+            <slot name="st-category-modal__footer">
+                <st-button class="st-category-modal__footer-btn" value="Нет" @click="$emit('closeUpdateCategory')" />
+                <st-button class="st-category-modal__footer-btn" value="Да" @click="$emit('updateCategory', item)" />
             </slot>
           </div>
         </div>
@@ -31,32 +26,16 @@
 </template>
 <script setup>
 import closeIcon from '../../../../../public/assets/icons/close.svg';
-import { onMounted } from 'vue';
 
-const emit = defineEmits(['confirmationYes', 'confirmationNo']); 
+const emit = defineEmits(['updateCategory', 'closeUpdateCategory']); 
 const props = defineProps({
     isShow: Boolean,
     header: String,
-    item: Object | undefined,
-    categories: Array,
+    item: Object,
 });
-
-let product = props.item ?? {
-    name: '',
-    category_id: -1,
-    cost: 0,
-    description: '',
-    image: '',
-    in_stock: 0,
-};
-
-let categoryComboboxData = props.categories.map((item) => { return { id: item.id, displayName: item.name }});
-
-console.log(categoryComboboxData);
-
 </script>
 <style lang="scss">
-.st-product-modal {
+.st-category-modal {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -114,7 +93,7 @@ console.log(categoryComboboxData);
         display: flex;
         flex-direction: column;
         flex: 1;
-        margin: 20px 0;
+        margin: $--st-offset-l auto;
         width: min-content;
     }
 

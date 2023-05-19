@@ -15,7 +15,9 @@ import StModalNotification from './components/primitives/modals/st-modal-notific
 import StPagination from './components/primitives/st-pagination.vue';
 import StTabel from './components/primitives/st-tabel.vue';
 import StConfirmationModal from './components/primitives/modals/st-confirmation-modal.vue';
-import StProductModal from './components/primitives/modals/st-product-modal.vue';
+import StProductCreateModal from './components/primitives/modals/st-product-create-modal.vue';
+import StProductUpdateModal from './components/primitives/modals/st-product-update-modal.vue';
+import StAdminHeader from './components/primitives/st-admin-header.vue';
 
 window.apiUrl = 'http://localhost';
 
@@ -31,7 +33,9 @@ app
     .component('StPagination', StPagination)
     .component('StTabel', StTabel)
     .component('StConfirmationModal', StConfirmationModal)
-    .component('StProductModal', StProductModal)
+    .component('StProductCreateModal', StProductCreateModal)
+    .component('StProductUpdateModal', StProductUpdateModal)
+    .component('StAdminHeader', StAdminHeader)
     .component('StLoad', StLoad);
 
 app

@@ -26,12 +26,13 @@ Route::get('getProductByName/{name}', [App\Http\Controllers\ProductController::c
 Route::get('searchByCategory/{id}', [App\Http\Controllers\ProductController::class, 'searchByCategory']);
 Route::get('sortProducts/{categoryId}/{sortId}', [App\Http\Controllers\ProductController::class, 'sort']);
 Route::post('deleteProduct/{id}', [App\Http\Controllers\ProductController::class, 'delete']);
+Route::post('updateProduct', [App\Http\Controllers\ProductController::class, 'update']);
+Route::post('createProduct', [App\Http\Controllers\ProductController::class, 'create']);
 
-
-Route::get('getCart', [App\Http\Controllers\ProductController::class, 'getCart']);
-Route::post('addToCart/{id}', [App\Http\Controllers\ProductController::class, 'addToCart']);
+Route::post('createOrder', [App\Http\Controllers\OrderController::class, 'create']);
 
 Route::get('getCategories', [App\Http\Controllers\CategoryController::class, 'getCategories']);
 Route::get('getCategory/{id}', [App\Http\Controllers\CategoryController::class, 'show']);
-
-Route::post('createOrder', [App\Http\Controllers\OrderController::class, 'create']);
+Route::post('createCategory', [App\Http\Controllers\CategoryController::class, 'create']);
+Route::post('updateCategory', [App\Http\Controllers\CategoryController::class, 'update']);
+Route::post('deleteCategory/{id}', [App\Http\Controllers\CategoryController::class, 'delete']);
