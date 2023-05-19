@@ -63,6 +63,11 @@ export default class Dataservice {
                 return await axios.post(`${window.apiUrl}/api/createOrder`, order);
             }
         },
+        orders: {
+            async get() {
+                return await axios.get(`${window.apiUrl}/api/getOrders`);
+            },
+        },
     }
 }
 

@@ -13,9 +13,27 @@ class OrderController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function getOrders()
     {
-      //
+      $orderProducts = [];
+      $orders = Order::paginate(12);
+      foreach ($orders as $order) {
+        $products = $order->products;
+        foreach ($products as $product) {
+          $product['quantity'] = ProductOrder::where([
+            ['product_id', '=', $product->id], 
+            ['order_id', '=', $order->id], 
+          ])->first()['quantity'];
+        }
+        array_push($orderProducts, [
+          'order_id' => $order->id, 
+          'email' => $order->email, 
+          'phone' => $order->phone, 
+          'products' => $products,
+        ]);
+      }
+
+      return response()->json($orderProducts);
     }
 
     /**

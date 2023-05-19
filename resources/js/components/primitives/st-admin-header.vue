@@ -3,7 +3,7 @@
       <div class="st-app-admin-header__toolbar">
           <st-label class="st-app-admin-header__link" value="Товары" @click="router.push({name:'admin'})" />
           <st-label class="st-app-admin-header__link" value="Категории" @click="router.push({name:'adminCategory'})" />
-          <st-label class="st-app-admin-header__link" value="Заказы" />
+          <st-label class="st-app-admin-header__link" value="Заказы" @click="router.push({name:'adminOrder'})" />
           <st-label class="st-app-admin-header__link" value="Администраторы" />
       </div>
     </div>

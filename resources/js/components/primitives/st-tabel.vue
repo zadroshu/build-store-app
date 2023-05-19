@@ -1,7 +1,7 @@
 <template>
     <div class="st-tabel">
         <table>
-            <thead>
+            <thead v-if="header">
             <tr>
                 <th v-for="key in columns"
                 @click="$emit('sort', key)">
@@ -18,7 +18,8 @@
             <tbody>
             <tr v-for="entry in heroes">
                 <td v-for="key in columns">
-                <st-label :value="entry[key]" />
+                    <st-tabel v-if="Array.isArray(entry[key])" :heroes="entry[key]" :columns="['id', 'name', 'quantity']" />
+                    <st-label v-else :value="entry[key]" />
                 </td>
                 <td v-if="options?.edit">
                     <div class="st-tabel__icon-wrapper"><editIcon @click="$emit('edit', entry)" /></div>
@@ -52,6 +53,10 @@ const props = defineProps({
     options: {
         edit: false,
         delete: false,
+    },
+    header: {
+        type: Boolean,
+        default: true,
     },
 });
 

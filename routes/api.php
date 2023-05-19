@@ -29,6 +29,7 @@ Route::post('deleteProduct/{id}', [App\Http\Controllers\ProductController::class
 Route::post('updateProduct', [App\Http\Controllers\ProductController::class, 'update']);
 Route::post('createProduct', [App\Http\Controllers\ProductController::class, 'create']);
 
+Route::get('getOrders', [App\Http\Controllers\OrderController::class, 'getOrders']);
 Route::post('createOrder', [App\Http\Controllers\OrderController::class, 'create']);
 
 Route::get('getCategories', [App\Http\Controllers\CategoryController::class, 'getCategories']);

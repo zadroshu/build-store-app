@@ -42,7 +42,7 @@ export default {
                 data: [],
                 links: [],
             }),
-            columns: ['name', 'category_id', 'cost', 'discount', 'description', 'image', 'in_stock'],
+            columns: ['id', 'category_id', 'cost', 'discount', 'description', 'image', 'in_stock'],
             isShowEditModal: false,
             isShowCreateModal: false,
             categories: [],
