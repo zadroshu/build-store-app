@@ -5,7 +5,7 @@
             <searchIcon />
         </div>
         <div v-if="isResponse && searchString != ''" class="st-search__results">
-            <div v-for="item in response" class="st-search__result-item" @click="goToProduct(item)" >
+            <div v-for="item in response" class="st-search__result-item" @click="$emit('select', item)" >
                 <st-label :value="item.name" />
             </div>
         </div>
@@ -36,10 +36,6 @@ export default {
         async search(event) {
             return await dataservice.products.getByName(event);
         },
-
-        goToProduct(item) {
-            this.$router.push({ name: 'product', params: { id: item.id } });
-        }
     },
 
     watch: {

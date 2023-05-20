@@ -61,7 +61,13 @@ export default class Dataservice {
         order: {
             async create(order) {
                 return await axios.post(`${window.apiUrl}/api/createOrder`, order);
-            }
+            },
+            async delete(id) {
+                return await axios.post(`${window.apiUrl}/api/deleteOrder/${id}`);
+            },
+            async update(order) {
+                return await axios.post(`${window.apiUrl}/api/updateOrder`, order);
+            },
         },
         orders: {
             async get() {

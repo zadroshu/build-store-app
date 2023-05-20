@@ -11,53 +11,55 @@
                 :heroes="tabeldata" 
                 :columns="columns" 
                 :options="{ edit: true, delete: true }" 
+                @plus=""
                 @edit="isShowEditModal = true, confirmationItem = $event" 
-                @delete="deleteItem" 
+                @delete="deleteItem"
             />
         </div>
-        <!-- <st-category-update-modal 
+        <st-order-update-modal 
             :isShow="isShowEditModal" 
             :item="confirmationItem" 
-            header="Категория" 
+            header="Заказ" 
             @close="isShowEditModal = false" 
-            @closeUpdateCategory="isShowEditModal = false"
-            @updateCategory="update"
+            @closeUpdateOrder="isShowEditModal = false"
+            @updateOrder="update"
         />
 
-        <st-category-create-modal 
+        <st-order-create-modal 
             :isShow="isShowCreateModal" 
             :item="confirmationItem" 
-            header="Категория" 
+            header="Заказ" 
             @close="isShowCreateModal = false" 
-            @closeCreateCategory="isShowCreateModal = false"
-            @createCategory="create"
-        /> -->
+            @closeCreateOrder="isShowCreateModal = false"
+            @createOrder="create"
+        />
     </div>
 </template>
 
 <script>
 import { toRaw, ref, onMounted } from 'vue';
 import { dataservice } from '../App.vue';
-// import StOrderUpdateModal from './primitives/modals/st-order-update-modal.vue';
-// import StOrderCreateModal from './primitives/modals/st-order-create-modal.vue';
+import StOrderUpdateModal from './primitives/modals/st-order-update-modal.vue';
+import StOrderCreateModal from './primitives/modals/st-order-create-modal.vue';
 
 export default {
-    // components: {
-    //     StOrderCreateModal,
-    //     StOrderCreateModal,
-    // },
+    components: {
+        StOrderUpdateModal,
+        StOrderCreateModal,
+    },
 
     data() {
         return {
             isLoading: false,
             tabeldata: [],
-            columns: ['order_id', 'email', 'phone', 'products'],
+            columns: ['id', 'email', 'phone', 'products'],
             isShowEditModal: false,
             isShowCreateModal: false,
 
             confirmationItem: {
-                id: -1,
-                name: '',
+               email: '',
+               phone: '',
+               products: [],
             },
 
         };
@@ -66,31 +68,38 @@ export default {
     methods: {
         async setData() {
             this.isLoading = true;
-            this.tabeldata = (await dataservice.orders.get()).data;
+            this.tabeldata = toRaw(await dataservice.orders.get()).data;
             this.isLoading = false;
         },
 
         createOrderModal() {
             this.confirmationItem = {
-                name: '',
+                email: '',
+                phone: '',
+                products: [],
             },
             this.isShowCreateModal = true;
         },
 
         async deleteItem(item) {
-            await dataservice.category.delete(item.id);
+            await dataservice.order.delete(item.id);
             await this.setData();
-            this.isShowEditModal = false;
         },
 
         async update(item) {
-            await dataservice.category.update(item);
+            await dataservice.order.update(item);
             await this.setData();
             this.isShowEditModal = false;
         },
 
         async create(item) {
-            await dataservice.category.create(item);
+            const order = {
+                email: item.email,
+                phone: item.phone,
+                cart: this.$store.getters['cart/cart'],
+            }
+            await dataservice.order.create(order);
+            this.$store.dispatch('cart/clearCart');
             await this.setData();
             this.isShowCreateModal = false;
         },
@@ -98,7 +107,6 @@ export default {
 
     async mounted() {
         await this.setData();
-        console.log(this.tabeldata);
     },
     
 }

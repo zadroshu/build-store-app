@@ -7,6 +7,9 @@
                 @click="$emit('sort', key)">
                     <st-label :value="capitalize(key)" />
                 </th>
+                <th v-if="options?.quantity">
+                    <st-label value="Изменить количество" />
+                </th>
                 <th v-if="options?.edit">
                     <st-label value="Изменить" />
                 </th>
@@ -18,8 +21,15 @@
             <tbody>
             <tr v-for="entry in heroes">
                 <td v-for="key in columns">
-                    <st-tabel v-if="Array.isArray(entry[key])" :heroes="entry[key]" :columns="['id', 'name', 'quantity']" />
+                    <st-tabel v-if="Array.isArray(entry[key])" :heroes="entry[key]" :columns="['id', 'name', 'pivot']" />
+                    <st-label v-else-if="entry[key]['quantity']" :value="entry[key]['quantity']" />
                     <st-label v-else :value="entry[key]" />
+                </td>
+                <td v-if="options?.quantity">
+                    <div class="st-tabel__icon-wrapper">
+                        <plusIcon @click="$emit('plus', entry)" />
+                        <minysIcon @click="$emit('minus', entry)" />
+                    </div>
                 </td>
                 <td v-if="options?.edit">
                     <div class="st-tabel__icon-wrapper"><editIcon @click="$emit('edit', entry)" /></div>
@@ -45,14 +55,18 @@
 <script setup>
 import editIcon from '../../../../public/assets/icons/edit.svg';
 import deleteIcon from '../../../../public/assets/icons/delete-icon.svg';
+import plusIcon from '../../../../public/assets/icons/add-to-cart.svg';
+import minysIcon from '../../../../public/assets/icons/minus.svg';
 import { ref } from 'vue';
 
+const emits = defineEmits(['delete', 'edit', 'minus', 'plus']);
 const props = defineProps({
     heroes: Array,
     columns: Array,
     options: {
         edit: false,
         delete: false,
+        quantity: false,
     },
     header: {
         type: Boolean,
@@ -93,7 +107,7 @@ function capitalize(str) {
 
     &__icon-wrapper {
         display: flex;
-        justify-content: center;
+        justify-content: space-around;
 
         svg {
             cursor: pointer;

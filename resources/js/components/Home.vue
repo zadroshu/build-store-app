@@ -1,7 +1,7 @@
 <template>
     <div class="st-index">
         <div class="st-index__toolbar">
-            <st-search />
+            <st-search @select="goToProduct" />
             <st-combobox :values="categoryComboboxData" @select="sortProductsByCategory" />
             <st-combobox :values="sortComboboxData" :defaultValue="defailtCostValue" @select="sortProductsByCost" />
         </div>
@@ -92,6 +92,10 @@
             const response = await axios.get(link.url);
             this.setData(response);
             this.isLoading = false;
+        },
+
+        goToProduct(item) {
+            this.$router.push({ name: 'product', params: { id: item.id } });
         }
     },
 

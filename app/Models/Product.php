@@ -21,7 +21,7 @@
 
     public function orders()
     {
-      return $this->belongsToMany(Order::class, 'product_order');
+      return $this->belongsToMany(Order::class, 'product_order')->withPivot('quantity');
     }
 
     public function category()

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Order;
+use App\Models\Product;
 use App\Models\ProductOrder;
 use Illuminate\Http\Request;
 
@@ -11,36 +12,23 @@ class OrderController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return json
      */
     public function getOrders()
     {
-      $orderProducts = [];
-      $orders = Order::paginate(12);
+      $orders = Order::all();
+      $ordersProducts = [];
       foreach ($orders as $order) {
-        $products = $order->products;
-        foreach ($products as $product) {
-          $product['quantity'] = ProductOrder::where([
-            ['product_id', '=', $product->id], 
-            ['order_id', '=', $order->id], 
-          ])->first()['quantity'];
-        }
-        array_push($orderProducts, [
-          'order_id' => $order->id, 
-          'email' => $order->email, 
-          'phone' => $order->phone, 
-          'products' => $products,
-        ]);
-      }
-
-      return response()->json($orderProducts);
+        array_push($ordersProducts, ['id' => $order->id, 'phone' => $order->phone, 'email' => $order->email,  'products' => $order->products]);
+      };
+      return response()->json($ordersProducts);
     }
 
     /**
      * Store a newly created resource in storage.
      *
      * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
+     * @return void
      */
     public function create(Request $request)
     {
@@ -64,47 +52,43 @@ class OrderController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param \App\Models\Order $order
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Order $order)
-    {
-      //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param \App\Models\Order $order
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Order $order)
-    {
-      //
-    }
-
-    /**
-     * Update the specified resource in storage.
+     * Update the specified resource.
      *
      * @param \Illuminate\Http\Request $request
-     * @param \App\Models\Order $order
-     * @return \Illuminate\Http\Response
+     * @return json
      */
-    public function update(Request $request, Order $order)
+    public function update(Request $request)
     {
-      //
+      $order = Order::find($request->all()['id']);
+      $order->email = $request->all()['email'];
+      $order->phone = $request->all()['phone'];
+
+      foreach ($order->products as $stoerdProduct) {
+        $searchResult = array_search($stoerdProduct['id'], array_column($request->all()['products'], 'id'));
+        if ($searchResult !== false) {
+          ProductOrder::where([
+            ['product_id', '=', $stoerdProduct['id']],
+            ['order_id', '=', $stoerdProduct['pivot']['order_id']],
+          ])->update(array('quantity' => $request->all()['products'][$searchResult]['pivot']['quantity']));
+        } else {
+          ProductOrder::where([
+            ['product_id', '=', $stoerdProduct['id']],
+            ['order_id', '=', $stoerdProduct['pivot']['order_id']],
+          ])->delete();
+        }
+      }
+
+      $order->save();
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Delete the specified resource from storage.
      *
-     * @param \App\Models\Order $order
-     * @return \Illuminate\Http\Response
+     * @param int $id
+     * @return json
      */
-    public function destroy(Order $order)
+    public function delete(int $id)
     {
-      //
+      return response()->json(Order::find($id)->delete());
     }
 }

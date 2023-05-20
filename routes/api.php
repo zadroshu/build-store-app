@@ -31,6 +31,8 @@ Route::post('createProduct', [App\Http\Controllers\ProductController::class, 'cr
 
 Route::get('getOrders', [App\Http\Controllers\OrderController::class, 'getOrders']);
 Route::post('createOrder', [App\Http\Controllers\OrderController::class, 'create']);
+Route::post('deleteOrder/{id}', [App\Http\Controllers\OrderController::class, 'delete']);
+Route::post('updateOrder', [App\Http\Controllers\OrderController::class, 'update']);
 
 Route::get('getCategories', [App\Http\Controllers\CategoryController::class, 'getCategories']);
 Route::get('getCategory/{id}', [App\Http\Controllers\CategoryController::class, 'show']);

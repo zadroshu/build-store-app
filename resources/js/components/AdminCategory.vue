@@ -79,7 +79,6 @@ export default {
         async deleteItem(item) {
             await dataservice.category.delete(item.id);
             await this.setData();
-            this.isShowEditModal = false;
         },
 
         async update(item) {
