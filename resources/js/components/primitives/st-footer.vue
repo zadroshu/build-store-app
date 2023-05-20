@@ -10,7 +10,7 @@
     const router = useRouter();
 
     function goToAdmin() {
-        router.push({name: 'admin'});
+        router.push({name: 'login'});
     }
   </script>
   
