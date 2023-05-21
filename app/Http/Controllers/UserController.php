@@ -18,6 +18,28 @@ class UserController extends Controller
     }
 
     /**
+     * Returns the specified resource.
+     *
+     * @param int $id
+     * @return json
+     */
+    public function show(int $id)
+    {
+        return response()->json(User::where('id', $id)->get());
+    }
+
+    /**
+     * Returns the specified resource by email.
+     *
+     * @param string $email
+     * @return json
+     */
+    public function showByEmail(string $email)
+    {
+        return response()->json(User::where('email', $email)->get());
+    }
+    
+    /**
      * Store a newly created resource in storage.
      *
      * @param \Illuminate\Http\Request $request
@@ -35,9 +57,16 @@ class UserController extends Controller
             'name' => $validated['name'],
             'email' => $validated['email'],
             'password' => \Hash::make($validated['password']),
+            'is_root' => false,
         ]));
     }
 
+    /**
+     * Save the specified resource in storage.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @return json
+     */
     function update(Request $request)
     {
         $validated = $request->validate([
@@ -47,5 +76,15 @@ class UserController extends Controller
         ]);
         return response()->json(User::where('id', $validated['id'])
             ->update(['name' => $validated['name'], 'email' => $validated['email']]));
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param int $id
+     * @return json
+     */
+    function delete(int $id) {
+        return response()->json(User::find($id)->delete());
     }
 }

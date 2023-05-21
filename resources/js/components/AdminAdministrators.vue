@@ -103,10 +103,9 @@ export default {
         },
 
         async deleteItem(item) {
-            console.log('deleteItem', item);
-            // await dataservice.admin.delete(item.id);
-            // const dataResponse = toRaw(await this.getData());
-            // this.setData(dataResponse);
+            await dataservice.admin.delete(item.id);
+            const dataResponse = toRaw(await this.getData());
+            this.setData(dataResponse);
         },
     },
 

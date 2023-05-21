@@ -44,8 +44,11 @@ Route::group(['middleware' => 'auth:sanctum'], function() {
     Route::post('deleteCategory/{id}', [App\Http\Controllers\CategoryController::class, 'delete']);
     
     Route::get('getAdmins', [App\Http\Controllers\UserController::class, 'getAdmins']);
+    Route::get('getAdmin/{id}', [App\Http\Controllers\UserController::class, 'show']);
+    Route::get('getAdminByEmail/{email}', [App\Http\Controllers\UserController::class, 'showByEmail']);
     Route::post('createAdmin', [App\Http\Controllers\UserController::class, 'create']);
     Route::post('updateAdmin', [App\Http\Controllers\UserController::class, 'update']);
+    Route::post('deleteAdmin/{id}', [App\Http\Controllers\UserController::class, 'delete']);
 
 });
 

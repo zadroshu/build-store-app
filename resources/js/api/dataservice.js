@@ -80,11 +80,20 @@ export default class Dataservice {
             },
         },
         admin: {
+            async get(id) {
+                return await axios.get(`${window.apiUrl}/api/getAdmin/${id}`);
+            },
+            async getByEmail(email) {
+                return await axios.get(`${window.apiUrl}/api/getAdminByEmail/${email}`);
+            },
             async create(admin) {
                 return await axios.post(`${window.apiUrl}/api/createAdmin`, admin);
             },
             async update(admin) {
                 return await axios.post(`${window.apiUrl}/api/updateAdmin`, admin);
+            },
+            async delete(id) {
+                return await axios.post(`${window.apiUrl}/api/deleteAdmin/${id}`);
             },
         },
     }

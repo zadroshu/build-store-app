@@ -18,7 +18,7 @@
     {
       return [
         'name' => $this->faker->name,
-        'category_id' => $this->faker->numberBetween(0, 10),
+        'category_id' => $this->faker->numberBetween(1, 9),
         'cost' => $this->faker->numberBetween(500, 11301),
         'discount' => $this->faker->numberBetween(0, 1000),
         'description' => $this->faker->text(150),

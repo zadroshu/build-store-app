@@ -33,10 +33,17 @@ export default {
                     localStorage.setItem('x_xsrf_token', response.config.headers['X-XSRF-TOKEN']);
                     this.$router.push({name: 'admin'});
                 })
+                .then(() => {
+                    dataservice.admin.getByEmail(this.email)
+                        .then(response => {
+                            localStorage.setItem('is_root', response.data[0].is_root);
+                        });
+                })
                 .catch(err => {
                     console.log(err.response);
                 });
             });
+            
         },
    }
 }
