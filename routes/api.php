@@ -25,6 +25,7 @@ Route::get('searchByCategory/{id}', [App\Http\Controllers\ProductController::cla
 Route::get('sortProducts/{categoryId}/{sortId}', [App\Http\Controllers\ProductController::class, 'sort']);
 
 Route::get('getCategories', [App\Http\Controllers\CategoryController::class, 'getCategories']);
+Route::get('getAllCategories', [App\Http\Controllers\CategoryController::class, 'getAllCategories']);
 Route::get('getCategory/{id}', [App\Http\Controllers\CategoryController::class, 'show']);
 
 Route::post('createOrder', [App\Http\Controllers\OrderController::class, 'create']);

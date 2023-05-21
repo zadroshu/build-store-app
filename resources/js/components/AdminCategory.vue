@@ -13,6 +13,7 @@
                 @delete="deleteItem" 
             />
         </div>
+        <st-pagination :links="categories.links" @change-page="changePage" />
         <st-category-update-modal 
             :isShow="isShowEditModal" 
             :item="confirmationItem" 
@@ -48,6 +49,10 @@ export default {
     data() {
         return {
             isLoading: false,
+            categories: {
+                data: [],
+                links: [],
+            },
             tabeldata: [],
             columns: ['id', 'name'],
             isShowEditModal: false,
@@ -62,9 +67,18 @@ export default {
     },
 
     methods: {
-        async setData() {
+        async getData() {
             this.isLoading = true;
-            this.tabeldata = (await dataservice.categories.get()).data;
+            const response = await dataservice.categories.get();
+            this.isLoading = false;
+            return response;
+        },
+
+        async setData(response) {
+            this.isLoading = true;
+            this.categories.data = response.data.data;
+            this.categories.links = response.data.links;
+            this.tabeldata = response.data.data;
             this.isLoading = false;
         },
 
@@ -77,24 +91,35 @@ export default {
 
         async deleteItem(item) {
             await dataservice.category.delete(item.id);
-            await this.setData();
+            const response = await this.getData();
+            await this.setData(response);
         },
 
         async update(item) {
             await dataservice.category.update(item);
-            await this.setData();
+            const response = await this.getData();
+            await this.setData(response);
             this.isShowEditModal = false;
         },
 
         async create(item) {
             await dataservice.category.create(item);
-            await this.setData();
+            const response = await this.getData();
+            await this.setData(response);
             this.isShowCreateModal = false;
+        },
+
+        async changePage(link) {
+            this.isLoading = true;
+            const response = await axios.get(link.url);
+            this.setData(response);
+            this.isLoading = false;
         },
     },
 
     async mounted() {
-        await this.setData();
+        const dataResponse = toRaw(await this.getData());
+        this.setData(dataResponse);
     },
     
 }

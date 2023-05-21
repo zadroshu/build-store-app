@@ -43,6 +43,9 @@ export default class Dataservice {
             async get() {
                 return await axios.get(`${window.apiUrl}/api/getCategories`);
             },
+            async getAll() {
+                return await axios.get(`${window.apiUrl}/api/getAllCategories`);
+            },
         },
         category: {
             async get(id) {

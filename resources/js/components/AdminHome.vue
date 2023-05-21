@@ -1,8 +1,10 @@
 <template>
     <div class="st-admin-home">
         <div class="st-admin-home__toolbar">
-            <input type="file" accept="text/xml" @change="uploadFile"/>
             <st-button value="Новый товар" @click="createItemModal" />
+            <div class="st-input-file">
+                <input type="file" accept="text/xml" @change="uploadFile"/>
+            </div>
         </div>
         <st-load v-if="isLoading" />
         <div v-else >
@@ -70,7 +72,7 @@ export default {
 
         async getCategories() {
             this.isLoading = true;
-            const response = await dataservice.categories.get();
+            const response = await dataservice.categories.getAll();
             this.isLoading = false;
 
             return response;
@@ -117,7 +119,6 @@ export default {
         },
 
         async createItem(item) {
-            console.log(item);
             if (!Number.isInteger(item.category_id)) {
                 item.category_id = this.categories.find(category => category.name === item.category_id).id;
             }
@@ -156,6 +157,22 @@ export default {
         margin: $--st-offset-l;
         display: flex;
         flex-direction: row-reverse;
+        align-items: center;
+        justify-content: space-between;
+    }
+}
+.st-input-file {
+    display: flex;
+    align-items: center;
+    width: min-content;
+    border: 1px solid $--st-brown;
+    border-radius: 20px;
+    padding: $--st-offset-s;
+
+    input {
+        font-size: $--st-font-medium;
+        font-weight: 700;
+        color: $--st-brown;
     }
 }
 </style>

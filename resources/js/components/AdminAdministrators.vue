@@ -103,9 +103,14 @@ export default {
         },
 
         async deleteItem(item) {
-            await dataservice.admin.delete(item.id);
-            const dataResponse = toRaw(await this.getData());
-            this.setData(dataResponse);
+            if (item.is_root != 1) {
+                await dataservice.admin.delete(item.id);
+                const dataResponse = toRaw(await this.getData());
+                this.setData(dataResponse);
+            } else {
+                console.log('Can\'t delete root administrator');
+            }
+            
         },
     },
 

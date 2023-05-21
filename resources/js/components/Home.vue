@@ -57,7 +57,7 @@
 
         async getCategories() {
             this.isLoading = true;
-            const response = await dataservice.categories.get();
+            const response = await dataservice.categories.getAll();
             this.isLoading = false;
 
             return response;

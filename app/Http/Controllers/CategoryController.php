@@ -12,13 +12,25 @@ use Illuminate\Http\Request;
 * @return json
 */
 class CategoryController extends Controller
-/**
+{
+    /**
+     * Returns a paginated listing of the resource.
+     *
+     * @return json
+     */
+
+    public function getCategories() 
+    {
+        return response()->json(Category::paginate());
+    }
+
+    /**
      * Returns a listing of the resource.
      *
      * @return json
      */
-{
-    public function getCategories() 
+
+    public function getAllCategories() 
     {
         return response()->json(Category::all());
     }
