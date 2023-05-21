@@ -1,6 +1,7 @@
 <template>
     <div class="st-admin-home">
         <div class="st-admin-home__toolbar">
+            <input type="file" accept="text/xml" @change="uploadFile"/>
             <st-button value="Новый товар" @click="createItemModal" />
         </div>
         <st-load v-if="isLoading" />
@@ -130,6 +131,12 @@ export default {
             await dataservice.product.delete(item.id);
             const dataResponse = toRaw(await this.getData());
             this.setData(dataResponse);
+        },
+
+        async uploadFile(item) {
+            const formData = new FormData();
+            formData.append('file', item.target.files[0]);
+            await dataservice.xml.parse(formData);
         },
     },
 

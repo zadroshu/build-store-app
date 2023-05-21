@@ -96,6 +96,11 @@ export default class Dataservice {
                 return await axios.post(`${window.apiUrl}/api/deleteAdmin/${id}`);
             },
         },
+        xml: {
+            async parse(file) {
+                return await axios.post(`${window.apiUrl}/api/xmlParse`, file, {headers: { 'Content-Type': 'multipart/form-data' }});
+            },
+        }
     }
 }
 

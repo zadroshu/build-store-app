@@ -50,5 +50,8 @@ Route::group(['middleware' => 'auth:sanctum'], function() {
     Route::post('updateAdmin', [App\Http\Controllers\UserController::class, 'update']);
     Route::post('deleteAdmin/{id}', [App\Http\Controllers\UserController::class, 'delete']);
 
+    Route::post('xmlParse', [App\Http\Controllers\XMLController::class, 'parseXML']);
+
+
 });
 
