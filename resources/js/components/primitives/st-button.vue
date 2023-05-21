@@ -19,18 +19,19 @@ const props = defineProps({
 <style scoped lang="scss">
 .st-button {
   padding: $--st-offset-m $--st-offset-l;
-  border: none;
+  border: 1px solid $--st-brown;
   border-radius: 10px;
   text-decoration: none;
-  color: white;
-  background: #0B63F6;
-  box-shadow: 0 0.5rem 0 #003CC5;
+  font-weight: 700;
+  color: $--st-brown;
+  background: $--st-white;
+  box-shadow: 0 0.5rem 0 $--st-hover;
 
   cursor: pointer;
 }
 
 .st-button:hover {
-  background: #003CC5;
+  background: $--st-hover;
   box-shadow: none;
   position: relative;
   top: 5px;

@@ -1,6 +1,7 @@
 <template>
     <div class="st-app">
-        <st-header />
+        <st-header v-if="!this.$route.path.includes('admin')"/>
+        <st-admin-header v-else />
         <div class="st-app__content">
             <router-view />
         </div>

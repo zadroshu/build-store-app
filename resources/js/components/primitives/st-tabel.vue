@@ -87,12 +87,10 @@ function capitalize(str) {
 
 <style lang="scss">
 .st-tabel {
-    border-radius: 3px;
-    background-color: #fff;
     margin: $--st-offset-l;
 
     th {
-        background-color: $--st-blue;
+        background-color: $--st-brown;
         cursor: pointer;
         -webkit-user-select: none;
         -moz-user-select: none;

@@ -1,6 +1,5 @@
 <template>
     <div class="st-admin-order">
-        <st-admin-header />
         <div class="st-admin-order__toolbar">
             <st-button value="Новый заказ" @click="createOrderModal" />
         </div>
@@ -37,7 +36,7 @@
 </template>
 
 <script>
-import { toRaw, ref, onMounted } from 'vue';
+import { toRaw } from 'vue';
 import { dataservice } from '../App.vue';
 import StOrderUpdateModal from './primitives/modals/st-order-update-modal.vue';
 import StOrderCreateModal from './primitives/modals/st-order-create-modal.vue';

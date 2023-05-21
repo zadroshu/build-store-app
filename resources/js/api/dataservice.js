@@ -74,6 +74,19 @@ export default class Dataservice {
                 return await axios.get(`${window.apiUrl}/api/getOrders`);
             },
         },
+        admins: {
+            async get() {
+                return await axios.get(`${window.apiUrl}/api/getAdmins`);
+            },
+        },
+        admin: {
+            async create(admin) {
+                return await axios.post(`${window.apiUrl}/api/createAdmin`, admin);
+            },
+            async update(admin) {
+                return await axios.post(`${window.apiUrl}/api/updateAdmin`, admin);
+            },
+        },
     }
 }
 

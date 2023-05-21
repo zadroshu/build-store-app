@@ -1,6 +1,5 @@
 <template>
     <div class="st-admin-category">
-        <st-admin-header />
         <div class="st-admin-category__toolbar">
             <st-button value="Новая категория" @click="createCategoryModal" />
         </div>

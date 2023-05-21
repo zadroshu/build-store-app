@@ -56,7 +56,7 @@ function goToProduct(item) {
 .st-product-card {
   &--hover {
     transition: background-color .5s;
-    background-color: red;
+    background-color: $--st-white;
     border-radius: 50%;
   }
 

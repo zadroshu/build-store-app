@@ -22,10 +22,6 @@ export default {
       this.$emit('changePage', toRaw(link));
     },
   },
-
-  mounted() {
-    console.log();
-  }
 }
 </script>
 
@@ -57,13 +53,13 @@ export default {
 }
 
 .st-link:hover {
-  background-color: $--st-blue;
+  background-color: $--st-brown;
   color: $--st-white;
   transition: .2s;
 }
 
 .--selected {
-  background-color: $--st-blue;
+  background-color: $--st-brown;
   color: $--st-white;
   transition: .2s;
 }

@@ -1,9 +1,7 @@
 <?php
 
-use App\Http\Controllers\ProductController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\CategoryController;
 
 /*
 |--------------------------------------------------------------------------
@@ -44,5 +42,10 @@ Route::group(['middleware' => 'auth:sanctum'], function() {
     Route::post('createCategory', [App\Http\Controllers\CategoryController::class, 'create']);
     Route::post('updateCategory', [App\Http\Controllers\CategoryController::class, 'update']);
     Route::post('deleteCategory/{id}', [App\Http\Controllers\CategoryController::class, 'delete']);
+    
+    Route::get('getAdmins', [App\Http\Controllers\UserController::class, 'getAdmins']);
+    Route::post('createAdmin', [App\Http\Controllers\UserController::class, 'create']);
+    Route::post('updateAdmin', [App\Http\Controllers\UserController::class, 'update']);
+
 });
 

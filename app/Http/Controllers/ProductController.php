@@ -10,12 +10,6 @@ use Symfony\Component\HttpFoundation\Session\Session;
 
 class ProductController extends Controller
 {
-    protected $session ;
-
-    function __construct() {
-        $this->session  = new Session();
-    }
-
     /**
      * Returns a listing of the resource.
      *
@@ -30,7 +24,7 @@ class ProductController extends Controller
      * Store a newly created resource in storage.
      *
      * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
+     * @return json
      */
     public function create(Request $request)
     {

@@ -1,6 +1,5 @@
 <template>
     <div class="st-admin-home">
-        <st-admin-header />
         <div class="st-admin-home__toolbar">
             <st-button value="Новый товар" @click="createItemModal" />
         </div>
