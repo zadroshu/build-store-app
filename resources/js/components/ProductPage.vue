@@ -6,7 +6,7 @@
         </div>
         <div class="st-product-page__grid">
             <div class="st-product-page__grid-left">
-            <img :src="product.img ?? 'https://via.placeholder.com/250x310/09f/fff.png'">
+                <img :src="`/storage/${product.image}`">
             </div>
             <div class="st-product-page__grid-center">
             <st-label value="Категория:" />
@@ -43,7 +43,7 @@
 </script>
 <script>
 import { dataservice } from '../App.vue';
-import { toRaw } from 'vue';
+import { toRaw, ref } from 'vue';
 export default {
     props: {
         id: Number,
@@ -51,7 +51,7 @@ export default {
 
     data() {
         return {
-            product: {},
+            product: ref({}),
             category: '',
             isLoading: true,
         }
@@ -124,8 +124,14 @@ export default {
     }
 
     &__grid-left {
+        width: 300px;
+        border-color: red;
         margin-left: $--st-offset-xxl;
 
+        img {
+            width: 300px;
+            height: 350px ;
+        }
         @include breakpoint(lg) {
             margin-left: 0;
         }

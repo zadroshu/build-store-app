@@ -2,10 +2,13 @@
   <div class="st-product-card">
     <div class="st-product-card__img-wrapper">
       <div @click="goToProduct(product)">
-        <img class="st-product-card__img-wrapper-img" src="https://via.placeholder.com/250x310/09f/fff.png">
+        <img class="st-product-card__img-wrapper-img"
+          :src="`storage/${props.product.image}`"
+        >
       </div>
       <div preserve-scroll class="st-product-card__img-add-to-cart" @click="addToCart(product)">
         <addToCartIcon
+          class="st-product-card__add-to-cart"
           :class="{'st-product-card--hover': isHover}"
           @mouseenter="isHover = true"
           @mouseleave="isHover = false"
@@ -19,7 +22,7 @@
       <st-label :value="product.cost" class="st-product-card__old-cost"/>
       <rubleIcon />
     </div>
-    <div v-else>
+    <div class="st-product-card__cost" v-else>
       <st-label :value="product.cost" class="st-product-card__new-cost" />
       <rubleIcon />
     </div>
@@ -68,6 +71,8 @@ function goToProduct(item) {
 
   &__img-wrapper-img {
     border-radius: 1rem;
+    width: 300px;
+    height: 350px;
   }
 
   &__img-add-to-cart {
@@ -77,6 +82,10 @@ function goToProduct(item) {
     top: 0;
 
     padding: $--st-offset-xs;
+  }
+
+  &__add-to-cart {
+    color: $--st-white;
   }
 
   &__with-discount {
@@ -90,6 +99,11 @@ function goToProduct(item) {
 
   &__old-cost {
     text-decoration: line-through;
+  }
+  
+  &__cost {
+    display: flex;
+    align-items: center;
   }
 }
 

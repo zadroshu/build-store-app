@@ -32,10 +32,32 @@ export default class Dataservice {
                 return await axios.post(`${window.apiUrl}/api/deleteProduct/${id}`);
             },
             async update(product) {
-                return await axios.post(`${window.apiUrl}/api/updateProduct`, product);
+                const formData = new FormData();
+                for (const key in product) {
+                    if (Object.hasOwnProperty.call(product, key)) {
+                        formData.append(key, product[key]);
+                    }
+                }
+
+                return await axios.post(`${window.apiUrl}/api/updateProduct`, formData, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data'
+                    }
+                });
             },
             async create(product) {
-                return await axios.post(`${window.apiUrl}/api/createProduct`, product);
+                const formData = new FormData();
+                for (const key in product) {
+                    if (Object.hasOwnProperty.call(product, key)) {
+                        formData.append(key, product[key]);
+                    }
+                }
+
+                return await axios.post(`${window.apiUrl}/api/createProduct`, formData, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data'
+                    }
+                });
             }
 
         },

@@ -15,7 +15,7 @@
                 <st-combobox :values="getCategories()" :defaultValue="getDefaultCategory()" @select="selectCategory" />
                 <st-input v-model="props.item.cost" placeholder="Cost" type="number" />
                 <st-input v-model="props.item.description" placeholder="Description" type="text" />
-                <st-input v-model="props.item.image" placeholder="Image" type="text" />
+                <st-input-file v-model="props.item.image" class="st-product-modal__input-img" accept="image/png, image/gif, image/jpeg" @change="selsectFile" />
                 <st-input v-model="props.item.in_stock" placeholder="In_stock" type="number" />
             </div>
 
@@ -52,6 +52,10 @@ function getDefaultCategory() {
 
 function selectCategory(item) {
     props.item.category_id = item.id
+}
+
+function selsectFile(item) {
+    props.item.image = item.target.files[0];
 }
 
 
@@ -94,6 +98,21 @@ function selectCategory(item) {
         margin-bottom: 1rem;
     }
 
+    &__input-img {
+        border-bottom: 1px solid $--st-black;
+        .st-input-file {
+            margin: $--st-offset-xs;
+            padding: $--st-offset-xs;
+            border: unset
+            border-radius unset;
+        }
+        
+        input {
+            
+            font-size: $--st-font-small;
+        }
+    }
+
     &__header {
         display: flex;
         justify-content: space-between;
@@ -117,6 +136,20 @@ function selectCategory(item) {
         flex: 1;
         margin: $--st-offset-l auto;
         width: min-content;
+
+        .st-input-file {
+            border: unset;
+            border-radius: unset;
+            border-bottom: 1px solid $--st-black;
+
+            input {
+                color: $--st-black;
+            }
+        }
+    }
+
+    .st-product-modal__body > * {
+        margin-top: $--st-offset-s;
     }
 
     &__footer {

@@ -15,7 +15,7 @@
  * 			Fixed typo 'DomDocument' to 'DOMDocument'
  */
 
-namespace App\Utils;
+namespace App\Models;
 class clXMLParser
 {
     private static $xml = null;

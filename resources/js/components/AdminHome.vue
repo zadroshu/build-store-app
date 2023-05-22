@@ -2,9 +2,7 @@
     <div class="st-admin-home">
         <div class="st-admin-home__toolbar">
             <st-button value="Новый товар" @click="createItemModal" />
-            <div class="st-input-file">
-                <input type="file" accept="text/xml" @change="uploadFile"/>
-            </div>
+            <st-input-file @change="uploadFile"/>
         </div>
         <st-load v-if="isLoading" />
         <div v-else >
@@ -33,7 +31,7 @@
 </template>
 
 <script>
-import { toRaw, ref, onMounted } from 'vue';
+import { toRaw, ref } from 'vue';
 import { dataservice } from '../App.vue';
 
 export default {
@@ -44,7 +42,7 @@ export default {
                 data: [],
                 links: [],
             }),
-            columns: ['id', 'category_id', 'cost', 'discount', 'description', 'image', 'in_stock'],
+            columns: ['id', 'image', 'category_id', 'cost', 'discount', 'description', 'in_stock'],
             isShowEditModal: false,
             isShowCreateModal: false,
             categories: [],
@@ -159,20 +157,6 @@ export default {
         flex-direction: row-reverse;
         align-items: center;
         justify-content: space-between;
-    }
-}
-.st-input-file {
-    display: flex;
-    align-items: center;
-    width: min-content;
-    border: 1px solid $--st-brown;
-    border-radius: 20px;
-    padding: $--st-offset-s;
-
-    input {
-        font-size: $--st-font-medium;
-        font-weight: 700;
-        color: $--st-brown;
     }
 }
 </style>

@@ -23,6 +23,7 @@
                 <td v-for="key in columns">
                     <st-tabel v-if="Array.isArray(entry[key])" :heroes="entry[key]" :columns="['id', 'name', 'pivot']" />
                     <st-label v-else-if="entry[key]['quantity']" :value="entry[key]['quantity']" />
+                    <img class="st-tabel__image" v-else-if="key === 'image'" :src="`/storage/${entry[key]}`" />
                     <st-label v-else :value="entry[key]" />
                 </td>
                 <td v-if="options?.quantity">
@@ -110,6 +111,11 @@ function capitalize(str) {
         svg {
             cursor: pointer;
         }
+    }
+
+    &__image {
+        width: 150px;
+        height: 200px;
     }
 }
 

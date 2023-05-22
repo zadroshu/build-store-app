@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Rules\FileOrString;
 use DB;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Http\Request;
 use App\Models\Product;
+use Illuminate\Support\Facades\Storage;
 use Symfony\Component\HttpFoundation\Session\Session;
 
 class ProductController extends Controller
@@ -19,7 +21,7 @@ class ProductController extends Controller
     {
         return response()->json(Product::paginate(12));
     }
-    
+
     /**
      * Store a newly created resource in storage.
      *
@@ -28,17 +30,18 @@ class ProductController extends Controller
      */
     public function create(Request $request)
     {
-        // dd($request->all());
+        
         $validated = $request->validate([
             'name' => 'required|string|max:191',
             'category_id' => 'required|int',
             'cost' => 'required|int',
             'discount' => 'required|int',
             'description' => 'required|string|max:1000',
-            'image' => 'nullable|string|max:255',
+            'image' => 'nullable|file',
             'in_stock' => 'required|int',
         ]);
-        $validated['image'] = $validated['image'] ?? '../../../publik';
+        $validated['image'] = Storage::put('public/images', $validated['image']);
+        $validated['image'] = str_replace('public/', "",$validated['image']) ?? 'images/9tstktGb0J4yNK2QFd8WshJ2WPvpnVLJVyRzsdLo.jpg';
         $product = new Product($validated);
         $response = $product->save();
 
@@ -54,19 +57,27 @@ class ProductController extends Controller
     public function update(Request $request)
     {
         $validated = $request->validate([
-            'id' => 'required|int',
-            'name' => 'required|string|max:191',
-            'category_id' => 'required|int',
-            'cost' => 'required|int',
-            'discount' => 'required|int',
-            'description' => 'required|string|max:1000',
-            'image' => 'nullable|string|max:255',
-            'in_stock' => 'required|int',
+            'id' => ['required', 'int'],
+            'name' => ['required', 'string', 'max:191'],
+            'category_id' => ['required', 'int'],
+            'cost' => ['required', 'int'],
+            'discount' => ['required', 'int'],
+            'description' => ['required', 'string', 'max:1000'],
+            'image' => ['nullable', new FileOrString],
+            'in_stock' => ['required', 'int'],
         ]);
+        
+        $product = Product::find($validated['id']);
 
-        $response = Product::where('id', $validated['id'])->update($validated);
+        if (!is_string($validated['image'])) {
+            Storage::delete('public/'.$product['image']);
+            $validated['image'] = Storage::put('public/images', $validated['image']);
+            $validated['image'] = str_replace('public/', "", $validated['image']) ?? 'images/default.jpg';
+        }
+        
+        $product->update($validated);
 
-        return response()->json($response);
+        return response()->json($product);
     }
 
     /**
@@ -77,7 +88,9 @@ class ProductController extends Controller
      */
     public function delete(int $id)
     {
-      return response()->json(Product::find($id)->delete());
+        $product = Product::find($id);
+        Storage::delete('public/'.$product['image']);
+        return response()->json($product->delete());
     }
 
     /**
