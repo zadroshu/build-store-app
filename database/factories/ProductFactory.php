@@ -22,7 +22,7 @@
         'cost' => $this->faker->numberBetween(500, 11301),
         'discount' => $this->faker->numberBetween(0, 1000),
         'description' => $this->faker->text(150),
-        'image' => 'images/9tstktGb0J4yNK2QFd8WshJ2WPvpnVLJVyRzsdLo.jpg',
+        'image' => 'images/default.jpg',
         'in_stock' => $this->faker->numberBetween(0, 1000),
       ];
     }

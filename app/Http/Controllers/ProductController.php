@@ -70,7 +70,9 @@ class ProductController extends Controller
         $product = Product::find($validated['id']);
 
         if (!is_string($validated['image'])) {
-            Storage::delete('public/'.$product['image']);
+            if (strpos($product['image'], 'default') === false) {
+                Storage::delete('public/'.$product['image']);
+            }
             $validated['image'] = Storage::put('public/images', $validated['image']);
             $validated['image'] = str_replace('public/', "", $validated['image']) ?? 'images/default.jpg';
         }
@@ -89,7 +91,11 @@ class ProductController extends Controller
     public function delete(int $id)
     {
         $product = Product::find($id);
-        Storage::delete('public/'.$product['image']);
+
+        if (strpos($product['image'], 'default') === false) {
+            Storage::delete('public/'.$product['image']);
+        }
+        
         return response()->json($product->delete());
     }
 
