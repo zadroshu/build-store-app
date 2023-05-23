@@ -42,7 +42,7 @@ export default {
                 data: [],
                 links: [],
             }),
-            columns: ['id', 'image', 'category_id', 'cost', 'discount', 'description', 'in_stock'],
+            columns: ['id', 'image','name', 'category_id', 'cost', 'discount', 'description', 'in_stock'],
             isShowEditModal: false,
             isShowCreateModal: false,
             categories: [],
@@ -136,6 +136,8 @@ export default {
             const formData = new FormData();
             formData.append('file', item.target.files[0]);
             await dataservice.xml.parse(formData);
+            const dataResponse = toRaw(await this.getData());
+            this.setData(dataResponse);
         },
     },
 

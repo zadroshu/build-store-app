@@ -8,7 +8,6 @@ use Illuminate\Database\Query\Builder;
 use Illuminate\Http\Request;
 use App\Models\Product;
 use Illuminate\Support\Facades\Storage;
-use Symfony\Component\HttpFoundation\Session\Session;
 
 class ProductController extends Controller
 {
